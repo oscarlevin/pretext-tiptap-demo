@@ -3,7 +3,9 @@ import ListItem from '@tiptap/extension-list-item'
 import TextStyle from '@tiptap/extension-text-style'
 import { EditorProvider, useCurrentEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
+import Focus from '@tiptap/extension-focus'
 import React from 'react'
+import './styles.scss'
 
 
 const MenuBar = () => {
@@ -180,6 +182,7 @@ const MenuBar = () => {
   }
   
   const extensions = [
+    Focus,
     Color.configure({ types: [TextStyle.name, ListItem.name] }),
     TextStyle.configure({ types: [ListItem.name] }),
     StarterKit.configure({
@@ -230,9 +233,12 @@ const MenuBar = () => {
     const { editor } = useCurrentEditor()
   
     return (
+      <details>
+        <summary>Inspect JSON</summary>
       <pre>
         {JSON.stringify(editor.getJSON(), null, 2)}
       </pre>
+      </details>
     )
   }
   
