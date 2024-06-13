@@ -25,6 +25,18 @@
     font-size: 50%;
     height: 1ex;
   }
+  .definition {
+    border: dashed 1px #8b8b8b;
+    padding: 0.50ex;
+    background-color: #a9c2e6;
+  }
+  .definition::after {
+    content: 'definition';
+    display: block;
+    text-align: right;
+    font-size: 50%;
+    height: 1ex;
+  }
   ul,
   ol {
     border: dashed 1px #2f3d36;

@@ -5,6 +5,8 @@ import { EditorProvider, useCurrentEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import Focus from '@tiptap/extension-focus'
 import Term from './extensions/Term'
+import Title from './extensions/Title'
+import Definition from './extensions/Definition'
 import React from 'react'
 import './styles.scss'
 
@@ -36,7 +38,7 @@ const MenuBar = () => {
           }
           className={editor.isActive('italic') ? 'is-active' : ''}
         >
-          italic
+          emphasis
         </button>
         <button
           onClick={() => editor.chain().focus().toggleStrike().run()}
@@ -77,41 +79,12 @@ const MenuBar = () => {
           paragraph
         </button>
         <button
-          onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
-          className={editor.isActive('heading', { level: 1 }) ? 'is-active' : ''}
+          onClick={() => editor.chain().focus().toggleTitle().run()}
+          disabled={!editor.can().chain().focus().toggleTitle().run()}
         >
-          h1
+          Title
         </button>
-        <button
-          onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-          className={editor.isActive('heading', { level: 2 }) ? 'is-active' : ''}
-        >
-          h2
-        </button>
-        <button
-          onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
-          className={editor.isActive('heading', { level: 3 }) ? 'is-active' : ''}
-        >
-          h3
-        </button>
-        <button
-          onClick={() => editor.chain().focus().toggleHeading({ level: 4 }).run()}
-          className={editor.isActive('heading', { level: 4 }) ? 'is-active' : ''}
-        >
-          h4
-        </button>
-        <button
-          onClick={() => editor.chain().focus().toggleHeading({ level: 5 }).run()}
-          className={editor.isActive('heading', { level: 5 }) ? 'is-active' : ''}
-        >
-          h5
-        </button>
-        <button
-          onClick={() => editor.chain().focus().toggleHeading({ level: 6 }).run()}
-          className={editor.isActive('heading', { level: 6 }) ? 'is-active' : ''}
-        >
-          h6
-        </button>
+ 
         <button
           onClick={() => editor.chain().focus().toggleBulletList().run()}
           className={editor.isActive('bulletList') ? 'is-active' : ''}
@@ -131,10 +104,10 @@ const MenuBar = () => {
           code block
         </button>
         <button
-          onClick={() => editor.chain().focus().toggleBlockquote().run()}
-          className={editor.isActive('blockquote') ? 'is-active' : ''}
+          onClick={() => editor.chain().focus().toggleDefinition().run()}
+          className={editor.isActive('definition') ? 'is-active' : ''}
         >
-          blockquote
+          Definition
         </button>
         <button onClick={() => editor.chain().focus().setHorizontalRule().run()}>
           horizontal rule
@@ -178,6 +151,8 @@ const MenuBar = () => {
   
   const extensions = [
     Term,
+    Title,
+    Definition,
     Focus,
     Color.configure({ types: [TextStyle.name, ListItem.name] }),
     TextStyle.configure({ types: [ListItem.name] }),
@@ -194,9 +169,9 @@ const MenuBar = () => {
   ]
   
   const content = `
-  <h2>
+  <h1>
     Hi there,
-  </h2>
+  </h1>
   <p>
     this is a <em>basic</em> example of <strong>tiptap</strong>. Sure, there are all kind of basic text styles you’d probably expect from a text editor. But wait until you see the lists:
   </p>
