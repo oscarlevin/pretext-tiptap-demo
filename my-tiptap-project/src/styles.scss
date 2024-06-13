@@ -6,20 +6,27 @@
     margin-top: 0.75em;
   }
 
+  .has-focus {
+    border-radius: 0.25rem;
+    border: solid 2px #007bff !important;
+    padding: 0.25rem;
+    margin: 0.25rem;
+  }
+
   p {
     border: dashed 1px #8b8b8b;
     padding: 0.50ex;
     background-color: #ffffff;
   }
-  p::after .has-focus::after {
+  p::after {
     content: 'p';
     display: block;
     text-align: right;
     font-size: 50%;
     height: 1ex;
   }
-  ul .has-focus,
-  ol .has-focus {
+  ul,
+  ol {
     border: dashed 1px #2f3d36;
     padding: 0.50ex;
     background-color: #fcfcdf;

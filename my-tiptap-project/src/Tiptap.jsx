@@ -4,6 +4,7 @@ import TextStyle from '@tiptap/extension-text-style'
 import { EditorProvider, useCurrentEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import Focus from '@tiptap/extension-focus'
+import Term from './extensions/Term'
 import React from 'react'
 import './styles.scss'
 
@@ -17,19 +18,13 @@ const MenuBar = () => {
   
     return (
       <>
-        <button
-          onClick={() => editor.chain().focus().toggleBold().run()}
-          disabled={
-            !editor.can()
-              .chain()
-              .focus()
-              .toggleBold()
-              .run()
-          }
-          className={editor.isActive('bold') ? 'is-active' : ''}
-        >
-          bold
-        </button>
+        <button 
+          onClick={() => editor.chain().focus().toggleTerm().run()}
+          disabled={!editor.can().chain().focus().toggleTerm().run()}
+          className={editor.isActive('term') ? 'is-active' : ''}
+          >
+        term</button>
+
         <button
           onClick={() => editor.chain().focus().toggleItalic().run()}
           disabled={
@@ -182,6 +177,7 @@ const MenuBar = () => {
   }
   
   const extensions = [
+    Term,
     Focus,
     Color.configure({ types: [TextStyle.name, ListItem.name] }),
     TextStyle.configure({ types: [ListItem.name] }),
@@ -241,10 +237,32 @@ const MenuBar = () => {
       </details>
     )
   }
+
+  const EditorHTMLPreview = () => {
+    const { editor } = useCurrentEditor()
+  
+    return (
+      <details>
+        <summary>Inspect HTML</summary>
+        <pre>
+          {editor.getHTML()}
+        </pre>
+      </details>
+    )
+  }
   
  const Tiptap = () => {
       return (
-          <EditorProvider slotBefore={<MenuBar />} slotAfter={<EditorJSONPreview/>} extensions={extensions} content={content}/>
+          <EditorProvider 
+            slotBefore={<MenuBar />} 
+            slotAfter={
+              <>
+              <EditorHTMLPreview/> 
+              <EditorJSONPreview/>
+              </>
+            } 
+            extensions={extensions} content={content}
+          />
           )
     }
         
