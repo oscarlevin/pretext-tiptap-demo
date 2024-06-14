@@ -30,13 +30,12 @@
     font-size: 50%;
     height: 1ex;
   }
-  h4 {
-    margin: 0;
-  }
   .title {
     display: inline-block;
     border: dashed 1px #8b8b8b;
     padding-top: 1ex;
+    font-size: large;
+    font-weight: bold;
   }
   .title::after {
     content: '   title';

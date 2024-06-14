@@ -13,7 +13,7 @@ import React from 'react'
 import './styles.scss'
 
 
-const MenuBar = () => {
+  const MenuBar = () => {
     const { editor } = useCurrentEditor()
   
     if (!editor) {
@@ -226,28 +226,30 @@ const MenuBar = () => {
       </details>
     )
   }
+
   
  const Tiptap = () => {
       return (
-          <EditorProvider 
-            slotBefore={<MenuBar />} 
-            slotAfter={
-              <>
-              <EditorHTMLPreview/> 
-              <EditorJSONPreview/>
-              </>
-            } 
-            extensions={extensions} content={
-              JSON.parse(window.localStorage.getItem('editor-content')) || 
-              defaultContent
-            }
-            onUpdate={ ({ editor }) => {
-              const jsonContent = JSON.stringify(editor.getJSON());
-              window.localStorage.setItem('editor-content', jsonContent);
-            }
-            }
-          />
-          )
+        <EditorProvider 
+          slotBefore={<MenuBar />} 
+          slotAfter={
+            <>
+            <EditorJSONPreview/>
+            <EditorHTMLPreview/> 
+            </>
+          } 
+          extensions={extensions} 
+          content={
+            JSON.parse(window.localStorage.getItem('editor-content')) || 
+            defaultContent
+          }
+          onUpdate={ ({ editor }) => {
+            const jsonContent = JSON.stringify(editor.getJSON());
+            window.localStorage.setItem('editor-content', jsonContent);
+          }
+          }
+        />
+      )
     }
         
 export default Tiptap;
