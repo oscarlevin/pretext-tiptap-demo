@@ -141,6 +141,11 @@ const MenuBar = () => {
         >
           redo
         </button>
+        <button
+          onClick={() => editor.chain().focus().setContent(defaultContent).run()}
+        >
+          reset
+        </button>
         {/* <button
           onClick={() => editor.chain().focus().setColor('#958DF1').run()}
           className={editor.isActive('textStyle', { color: '#958DF1' }) ? 'is-active' : ''}
@@ -171,7 +176,7 @@ const MenuBar = () => {
     }),
   ]
   
-  const content = `
+  const defaultContent = `
   <h1>
     Tiptap Demo
   </h1>
@@ -179,7 +184,7 @@ const MenuBar = () => {
     Welcome to this very basic demo of how tiptap can be used to edit PreTeXt.  First, a definition.
   </p>
   <div class="definition definition-like">
-  A <dfn>definition block</dfn> is a section of text that contains a definition.
+  A <term>definition block</term> is a section of text that contains a definition.
   </div>
   <ul>
     <li>
@@ -232,7 +237,15 @@ const MenuBar = () => {
               <EditorJSONPreview/>
               </>
             } 
-            extensions={extensions} content={content}
+            extensions={extensions} content={
+              JSON.parse(window.localStorage.getItem('editor-content')) || 
+              defaultContent
+            }
+            onUpdate={ ({ editor }) => {
+              const jsonContent = JSON.stringify(editor.getJSON());
+              window.localStorage.setItem('editor-content', jsonContent);
+            }
+            }
           />
           )
     }

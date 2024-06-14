@@ -1,6 +1,8 @@
 import { Mark, mergeAttributes, markInputRule } from '@tiptap/core'
 
-export const inputRegex = /(?:^|\s)(<term>(.*?)<\/term>)$/
+export const inputPTXRegex = /(?:^|\s)(<term>(.*?)<\/term>)$/
+export const inputMDRegex = /(?:^|\s)(\*(.*?)\*)$/
+export const inputRegex = /(?:^|\s)`t\s$/
 
 // /(?:^|\s)(`(?!\s+`)((?:[^`]+))`(?!\s+`))$/
 
@@ -12,12 +14,12 @@ const Definition = Mark.create({
 
   parseHTML() {
     return [
-      { tag: 'dfn' },
+      { tag: 'term' },
     ]
   }, 
 
   renderHTML({ HTMLAttributes }) {
-    return ['dfn',mergeAttributes({class: 'terminology'}, HTMLAttributes), 0]
+    return ['span',mergeAttributes({class: 'term'}, HTMLAttributes), 0]
   },
 
   addCommands() {
@@ -44,6 +46,14 @@ const Definition = Mark.create({
     return [
       markInputRule({
         find: inputRegex,
+        type: this.type,
+      }),
+      markInputRule({
+        find: inputPTXRegex,
+        type: this.type,
+      }),
+      markInputRule({
+        find: inputMDRegex,
         type: this.type,
       }),
     ]
