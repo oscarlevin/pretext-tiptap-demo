@@ -3,6 +3,8 @@ import ListItem from '@tiptap/extension-list-item'
 import TextStyle from '@tiptap/extension-text-style'
 import { EditorProvider, useCurrentEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
+import { Mathematics } from '@tiptap-pro/extension-mathematics'
+import 'katex/dist/katex.min.css'
 import Focus from '@tiptap/extension-focus'
 import Term from './extensions/Term'
 import Title from './extensions/Title'
@@ -97,24 +99,24 @@ const MenuBar = () => {
         >
           ordered list
         </button>
-        <button
+        {/* <button
           onClick={() => editor.chain().focus().toggleCodeBlock().run()}
           className={editor.isActive('codeBlock') ? 'is-active' : ''}
         >
           code block
-        </button>
+        </button> */}
         <button
           onClick={() => editor.chain().focus().toggleDefinition().run()}
           className={editor.isActive('definition') ? 'is-active' : ''}
         >
           Definition
         </button>
-        <button onClick={() => editor.chain().focus().setHorizontalRule().run()}>
+        {/* <button onClick={() => editor.chain().focus().setHorizontalRule().run()}>
           horizontal rule
         </button>
         <button onClick={() => editor.chain().focus().setHardBreak().run()}>
           hard break
-        </button>
+        </button> */}
         <button
           onClick={() => editor.chain().focus().undo().run()}
           disabled={
@@ -139,12 +141,12 @@ const MenuBar = () => {
         >
           redo
         </button>
-        <button
+        {/* <button
           onClick={() => editor.chain().focus().setColor('#958DF1').run()}
           className={editor.isActive('textStyle', { color: '#958DF1' }) ? 'is-active' : ''}
         >
           purple
-        </button>
+        </button> */}
       </>
     )
   }
@@ -153,6 +155,7 @@ const MenuBar = () => {
     Term,
     Title,
     Definition,
+    Mathematics,
     Focus,
     Color.configure({ types: [TextStyle.name, ListItem.name] }),
     TextStyle.configure({ types: [ListItem.name] }),
@@ -170,11 +173,14 @@ const MenuBar = () => {
   
   const content = `
   <h1>
-    Hi there,
+    Tiptap Demo
   </h1>
   <p>
-    this is a <em>basic</em> example of <strong>tiptap</strong>. Sure, there are all kind of basic text styles you’d probably expect from a text editor. But wait until you see the lists:
+    Welcome to this very basic demo of how tiptap can be used to edit PreTeXt.  First, a definition.
   </p>
+  <div class="definition definition-like">
+  A <dfn>definition block</dfn> is a section of text that contains a definition.
+  </div>
   <ul>
     <li>
       That’s a bullet list with one …
@@ -183,20 +189,10 @@ const MenuBar = () => {
       … or two list items.
     </li>
   </ul>
+
   <p>
-    Isn’t that great? And all of that is editable. But wait, there’s more. Let’s try a code block:
+    Pretty neat, huh?  Oh yeah, and it can do some math: $\\int_1^2 x^2 dx = \\frac{7}{3}$.  I don't know if that's correct.  Yay AI!
   </p>
-  <pre><code class="language-css">body {
-  display: none;
-  }</code></pre>
-  <p>
-    I know, I know, this is impressive. It’s only the tip of the iceberg though. Give it a try and click a little bit around. Don’t forget to check the other examples too.
-  </p>
-  <blockquote>
-    Wow, that’s amazing. Good work, boy! 👏
-    <br />
-    — Mom
-  </blockquote>
   `
 
   

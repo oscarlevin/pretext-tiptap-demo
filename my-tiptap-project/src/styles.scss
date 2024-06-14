@@ -12,6 +12,10 @@
     padding: 0.25rem;
     margin: 0.25rem;
   }
+  
+  dfn {
+    font-weight: bold;
+  }
 
   p {
     border: dashed 1px #8b8b8b;
@@ -25,17 +29,42 @@
     font-size: 50%;
     height: 1ex;
   }
-  .definition {
+  h4 {
+    margin: 0;
+  }
+  .title {
+    display: inline-block;
     border: dashed 1px #8b8b8b;
-    padding: 0.50ex;
-    background-color: #a9c2e6;
+    padding-top: 1ex;
+  }
+  .title::after {
+    content: '   title';
+    display: inline-block;
+    text-align: right;
+    font-size: 50%;
+    font-weight: lighter;
+    height: 0ex;
+  }
+  .definition {
+    display: block;
+    border: dashed 1px #8b8b8b;
+    padding: 0.25ex;
+    background-color: #b3c6e0;
+  }
+  .definition::before{
+    content: 'Definition. ';
+    display: inline-block;
+    text-align: left;
+    margin-top: -.5ex;
+    font-size: 110%;
+    font-weight: bold;
   }
   .definition::after {
     content: 'definition';
     display: block;
     text-align: right;
     font-size: 50%;
-    height: 1ex;
+    height: 2ex;
   }
   ul,
   ol {

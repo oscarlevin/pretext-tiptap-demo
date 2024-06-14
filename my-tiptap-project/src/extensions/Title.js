@@ -16,7 +16,7 @@ const Title = Node.create({
 
   content: 'inline*',
 
-  group: 'block',
+  group: 'block title',
 
   defining: true,
 
@@ -39,7 +39,8 @@ const Title = Node.create({
 
   renderHTML({ HTMLAttributes }) {
 
-    return ['h4', {class: "heading"}, ['span', {class: "type"}, "Definition"], ['span', {class: "space"}, " " ], ['span', {class: "codenumber"}, "xx.yy"], ['span', {class: "period"}, "."], ['span', {class: "space"}, " "], ['span', {class: "title"}, 0]]
+    // return ['h4', {class: "heading"}, ['span', {class: "type"}, "Definition"], ['span', {class: "space"}, " " ], ['span', {class: "codenumber"}, "xx.yy"], ['span', {class: "period"}, "."], ['span', {class: "space"}, " "], ['span', {class: "title"}, 0]]
+    return ['h4', mergeAttributes({class: "title"}, HTMLAttributes), 0]
   },
 
 

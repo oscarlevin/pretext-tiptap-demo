@@ -14,7 +14,7 @@
 .ProseMirror h4,
 .ProseMirror h5,
 .ProseMirror h6 {
-  line-height: 1.1;
+  line-height: 1;
 }
 
 .ProseMirror code {
