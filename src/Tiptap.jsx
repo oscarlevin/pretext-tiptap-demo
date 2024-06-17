@@ -184,9 +184,10 @@ import './styles.scss'
   <p>
     Welcome to this very basic demo of how tiptap can be used to edit PreTeXt.  First, a definition.
   </p>
-  <div class="definition definition-like">
+  <definition>
   A <term>definition block</term> is a section of text that contains a definition.
-  </div>
+  </definition>
+  <p>
   <ul>
     <li>
       That’s a bullet list with one …
@@ -195,7 +196,7 @@ import './styles.scss'
       … or two list items.
     </li>
   </ul>
-
+</p>
   <p>
     Pretty neat, huh?  Oh yeah, and it can do some math: $\\int_1^2 x^2 dx = \\frac{7}{3}$.  I don't know if you can do display math though.
   </p>

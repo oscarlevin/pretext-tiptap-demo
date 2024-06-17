@@ -16,6 +16,9 @@ const Definition = Node.create({
   parseHTML() {
     return [
       {
+        tag: 'definition',
+      },
+      {
         tag: 'div.definition.definition-like',
       },
     ]
