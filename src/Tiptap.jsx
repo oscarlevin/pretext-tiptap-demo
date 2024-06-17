@@ -10,6 +10,7 @@ import Term from './extensions/Term'
 import Title from './extensions/Title'
 import Definition from './extensions/Definition'
 import React from 'react'
+import json2ptx from './extensions/json2ptx'
 import './styles.scss'
 
 
@@ -196,11 +197,25 @@ import './styles.scss'
   </ul>
 
   <p>
-    Pretty neat, huh?  Oh yeah, and it can do some math: $\\int_1^2 x^2 dx = \\frac{7}{3}$.  I don't know if that's correct.  Yay AI!
+    Pretty neat, huh?  Oh yeah, and it can do some math: $\\int_1^2 x^2 dx = \\frac{7}{3}$.  I don't know if you can do display math though.
   </p>
   `
 
-  
+  const EditorPTXPreview = () => {
+    const { editor } = useCurrentEditor()
+
+    const ptx = json2ptx(editor.getJSON())
+
+    return (
+      <details>
+        <summary>Inspect PreTeXt</summary>
+        <pre>
+          { ptx }
+        </pre>
+      </details>
+    )
+  }
+
   const EditorJSONPreview = () => {
     const { editor } = useCurrentEditor()
   
@@ -234,6 +249,7 @@ import './styles.scss'
           slotBefore={<MenuBar />} 
           slotAfter={
             <>
+            <EditorPTXPreview />
             <EditorJSONPreview/>
             <EditorHTMLPreview/> 
             </>
