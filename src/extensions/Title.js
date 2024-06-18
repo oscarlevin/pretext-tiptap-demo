@@ -5,7 +5,6 @@ const Title = Node.create({
 
   content: 'text*',
 
-  group: 'title',
 
   // defining: true,
 

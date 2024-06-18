@@ -1,155 +1,54 @@
-import {Extension, Node, mergeAttributes, wrappingInputRule } from '@tiptap/core'
+import {Extension, Node, mergeAttributes, wrappingInputRule, nodeInputRule } from '@tiptap/core'
 
-const Theorem = Node.create({
-  name: 'theorem',
 
-  content: 'title? para+',
-  
-  group: 'block theoremLike',
+const TheoremLikeElements = ["theorem", "lemma", "corollary", "proposition", "conjecture", "claim", "fact"]
 
-  selectable: false,
-
-  draggable: true,
-
-  defining: false,
-
-  parseHTML() {
-    return [
-      {
-        tag: 'theorem',
-      },
-    ]
-  },
-
-  renderHTML({ HTMLAttributes }) {
-    return ['div', mergeAttributes({ class: 'theorem theorem-like', label: 'theorem'}, HTMLAttributes), 0]
-  },
-
-  addCommands() {
-    return {
-      setTheorem: attributes => ({ commands }) => {
-        return commands.setWrap(this.name, attributes)
-      },
-      toggleTheorem: attributes => ({ commands }) => {
-        return commands.toggleWrap(this.name, attributes)
-      },
-    }
-  },
-
-  addInputRules() {
-    return [
-      wrappingInputRule({
-        find: new RegExp(`^#theorem\\s$`),
-        type: this.type,
-      }),
-    ]
-  },
-
-})
-
-const Lemma = Node.create({
-    name: 'lemma',
-    
-    content: 'title? para+',
-    
-    group: 'block theoremLike',
-    
-    selectable: false,
-    
-    draggable: true,
-    
-    defining: false,
-    
-    parseHTML() {
-        return [
-        {
-            tag: 'lemma',
-        },
-        ]
-    },
-    
-    renderHTML({ HTMLAttributes }) {
-        return ['div', mergeAttributes({ class: 'lemma theorem-like' }, HTMLAttributes), 0]
-    },
-    
-    addCommands() {
-        return {
-        setLemma: attributes => ({ commands }) => {
-            return commands.setWrap(this.name, attributes)
-        },
-        toggleLemma: attributes => ({ commands }) => {
-            return commands.toggleWrap(this.name, attributes)
-        },
-        }
-    },
-    
-    addInputRules() {
-        return [
-        wrappingInputRule({
-            find: new RegExp(`^!lem\\s$`),
-            type: this.type,
-        }),
-        ]
-    },
-    
-    })
-
-    const Chapter = Node.create({
-      name: 'chapter',
-      
-      content: 'title? para+',
-      
-      group: 'block theoremLike',
-      
-      selectable: false,
-      
-      draggable: true,
-      
-      defining: false,
-      
-      parseHTML() {
-          return [
-          {
-              tag: 'chapter',
-          },
-          ]
-      },
-      
-      renderHTML({ HTMLAttributes }) {
-          return ['div', mergeAttributes({ class: 'chapter' }, HTMLAttributes), 0]
-      },
-      
-      addCommands() {
-          return {
-          setChapter: attributes => ({ commands }) => {
-              return commands.setWrap(this.name, attributes)
-          },
-          toggleChapter: attributes => ({ commands }) => {
-              return commands.toggleWrap(this.name, attributes)
-          },
-          }
-      },
-      
-      addInputRules() {
-          return [
-          wrappingInputRule({
-              find: new RegExp(`^!ch\\s$`),
-              type: this.type,
-          }),
-          ]
-      },
-      
-      })
 
 const TheoremLike = Extension.create({
   name: 'theoremLike',
 
   addExtensions() {
-    return [
-      Theorem,
-      Lemma,
-      Chapter,
-    ]
+    const array = []
+    for (let element of TheoremLikeElements) {
+      array.push(Node.create({
+        name: element,
+        content: 'title? para+',
+        group: 'block theoremLike',
+        selectable: true,
+        draggable: true,
+        parseHTML() {
+          return [
+            {
+              tag: element,
+            },
+          ]
+        },
+        renderHTML({ HTMLAttributes }) {
+          return ['div', mergeAttributes({ class: `${element} theorem-like`, label: element }, HTMLAttributes), 0]
+        },
+        addCommands() {
+          return {
+            [`set${element.charAt(0).toUpperCase() + element.slice(1)}`]: attributes => ({ commands }) => {
+              return commands.setWrap(this.name, attributes)
+            },
+            [`toggle${element.charAt(0).toUpperCase() + element.slice(1)}`]: attributes => ({ commands }) => {
+              return commands.toggleWrap(this.name, attributes)
+            },
+          }
+        },
+        addInputRules() {
+          return [
+            wrappingInputRule({
+              find: new RegExp(`^!${element.charAt(0).toUpperCase() + element.slice(1)}\\s$`),
+              type: this.type,
+            }),
+          ]
+        }
+      }))
+
+    }
+    
+    return array
   },
 })
 

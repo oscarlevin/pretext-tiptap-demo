@@ -198,6 +198,12 @@ import Divisions from './extensions/Divisions'
   <p>
     This is a paragraph.  It can contain <term>terms</term> and <em>emphasis</em>.
   </p>
+  <corollary>
+  <title>My Corollary</title>
+  <p>
+    This is a paragraph in a section.  It can contain <term>terms</term> and <em>emphasis</em>.
+  </p>
+  </corollary>
   <theorem>
   <title>My Theorem</title>
   <p>
