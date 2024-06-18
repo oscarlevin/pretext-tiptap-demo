@@ -22,9 +22,6 @@ const Definition = Node.create({
       {
         tag: 'definition',
       },
-      {
-        tag: 'div.definition.definition-like',
-      },
     ]
   },
 

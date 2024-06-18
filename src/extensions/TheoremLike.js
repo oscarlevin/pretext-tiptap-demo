@@ -18,9 +18,6 @@ const Theorem = Node.create({
       {
         tag: 'theorem',
       },
-      {
-        tag: 'div.theorem.theorem-like',
-      },
     ]
   },
 
@@ -68,9 +65,6 @@ const Lemma = Node.create({
         {
             tag: 'lemma',
         },
-        {
-            tag: 'div.lemma.theorem-like',
-        },
         ]
     },
     
@@ -100,6 +94,53 @@ const Lemma = Node.create({
     
     })
 
+    const Chapter = Node.create({
+      name: 'chapter',
+      
+      content: 'title? paragraph+',
+      
+      group: 'block theoremLike',
+      
+      selectable: false,
+      
+      draggable: true,
+      
+      defining: false,
+      
+      parseHTML() {
+          return [
+          {
+              tag: 'chapter',
+          },
+          ]
+      },
+      
+      renderHTML({ HTMLAttributes }) {
+          return ['div', mergeAttributes({ class: 'chapter' }, HTMLAttributes), 0]
+      },
+      
+      addCommands() {
+          return {
+          setChapter: attributes => ({ commands }) => {
+              return commands.setWrap(this.name, attributes)
+          },
+          toggleChapter: attributes => ({ commands }) => {
+              return commands.toggleWrap(this.name, attributes)
+          },
+          }
+      },
+      
+      addInputRules() {
+          return [
+          wrappingInputRule({
+              find: new RegExp(`^!ch\\s$`),
+              type: this.type,
+          }),
+          ]
+      },
+      
+      })
+
 const TheoremLike = Extension.create({
   name: 'theoremLike',
 
@@ -107,6 +148,7 @@ const TheoremLike = Extension.create({
     return [
       Theorem,
       Lemma,
+      Chapter,
     ]
   },
 })

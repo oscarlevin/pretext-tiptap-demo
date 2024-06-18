@@ -13,10 +13,10 @@ function json2ptx(json) {
     // every node should have a type; if it needs to be changed, we do so:
     let elementName = json.type in tt2ptx ? tt2ptx[json.type] : json.type
     ptx = ptx + "<"+ elementName + ">\n"
-    console.log("content is:"+ json.content)
+    // console.log("content is:"+ json.content)
     for (let fragment of json.content) {
       ptx = ptx + json2ptx(fragment)
-      console.log(fragment)
+      // console.log(fragment)
     //   // ptx = ptx + "<"+fragment.type+">"
     //   ptx = ptx + json2ptx(fragment.content)
     //   // ptx = ptx + "</"+fragment.type+">\n"
@@ -33,7 +33,7 @@ function json2ptx(json) {
         ptx = ptx + json.text
       }
     } else {
-      console.log("Unexpected leaf node type:")
+      // console.log("Unexpected leaf node type:")
       ptx = ptx + "<!-- Something is missing -->"
     }
   }

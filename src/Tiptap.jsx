@@ -13,6 +13,7 @@ import React from 'react'
 import json2ptx from './extensions/json2ptx'
 import './styles.scss'
 import TheoremLike from './extensions/TheoremLike'
+import Divisions from './extensions/Divisions'
 
 
   const MenuBar = () => {
@@ -24,6 +25,14 @@ import TheoremLike from './extensions/TheoremLike'
   
     return (
       <>
+        <button 
+          onClick={() => editor.chain().focus().wrapIn('chapter').run()}
+          disabled={!editor.can().chain().focus().wrapIn('chapter').run()}
+          className={editor.isActive('chapter') ? 'is-active' : ''}
+          >
+        Chapter
+        </button>
+
         <button 
           onClick={() => editor.chain().focus().toggleMark('term').run()}
           disabled={!editor.can().chain().focus().toggleMark('term').run()}
@@ -159,6 +168,7 @@ import TheoremLike from './extensions/TheoremLike'
   }
   
   const extensions = [
+    Divisions,
     TheoremLike,
     Term,
     Title,
@@ -180,15 +190,23 @@ import TheoremLike from './extensions/TheoremLike'
   ]
   
   const defaultContent = `
-  <h1>
-    Tiptap Demo
-  </h1>
-  <lemma>
+  <p>
+    This is a paragraph.  It can contain <term>terms</term> and <em>emphasis</em>.
+  </p>
+  <chapter>
+  <title>
+    Tiptap Demo for my section
+  </title>
+  <p>
+    This is a paragraph in a section.  It can contain <term>terms</term> and <em>emphasis</em>.
+  </p>
+  </chapter>
+  <section>
   <title>My Lemma</title>
   <p>Lemma text here</p>
   <p>Another paragraph</p>
-  </lemma>
-  <p>
+  </section>
+  <p> 
     Welcome to this very basic demo of how tiptap can be used to edit PreTeXt.  First, a definition.
   </p>
   <definition>
@@ -211,6 +229,7 @@ import TheoremLike from './extensions/TheoremLike'
     </li>
   </ul>
 </p>
+
   <p>
     Pretty neat, huh?  Oh yeah, and it can do some math: $\\int_1^2 x^2 dx = \\frac{7}{3}$.  I don't know if you can do display math though.
   </p>
@@ -223,6 +242,19 @@ import TheoremLike from './extensions/TheoremLike'
 
   <p> And that's the end of the demo.  Thanks for coming!</p>
   `
+
+  const SchemaViewer = () => {
+    const { editor } = useCurrentEditor()
+
+    return (
+      <details>
+        <summary>Inspect Schema</summary>
+        <pre>
+          {console.log(editor.schema)}
+        </pre>
+      </details>
+    )
+  }
 
   const EditorPTXPreview = () => {
     const { editor } = useCurrentEditor()
@@ -272,6 +304,7 @@ import TheoremLike from './extensions/TheoremLike'
           slotBefore={<MenuBar />} 
           slotAfter={
             <>
+            <SchemaViewer />
             <EditorPTXPreview />
             <EditorJSONPreview/>
             <EditorHTMLPreview/> 
