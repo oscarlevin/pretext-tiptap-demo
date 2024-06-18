@@ -3,7 +3,7 @@ import { Node, mergeAttributes, wrappingInputRule } from '@tiptap/core'
 const Definition = Node.create({
   name: 'definition',
 
-  content: 'title? paragraph+',
+  content: 'title? para+',
   
   group: 'block definitionLike',
 
@@ -26,7 +26,7 @@ const Definition = Node.create({
   },
 
   renderHTML({ HTMLAttributes }) {
-    return ['div', mergeAttributes({ class: 'definition definition-like' }, HTMLAttributes), 0]
+    return ['div', mergeAttributes({ class: 'definition definition-like', label: 'def' }, HTMLAttributes), 0]
   },
 
   addCommands() {

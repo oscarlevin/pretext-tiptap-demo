@@ -1,6 +1,6 @@
 
 const tt2ptx = {
-  "paragraph": "p",
+  "para": "p",
   "bulletList": "ul",
   "orderedList": "ol",
   "listItem": "li",

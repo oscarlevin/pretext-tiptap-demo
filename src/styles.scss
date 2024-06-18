@@ -7,7 +7,6 @@
     margin-top: 0.75em;
   }
 
-
   .has-focus {
     border-radius: 0.25rem;
     border: solid 2px #007bff !important;
@@ -20,17 +19,28 @@
     font-style: italic;
   }
 
-  p {
+  div, article {
     border: dashed 1px #8b8b8b;
-    padding: 0.50ex;
+    padding: 1ex;
+    margin: 1ex;
     background-color: #ffffff;
   }
-  p::after {
-    content: 'p';
+
+  article::before {
+    content: attr(class);
     display: block;
     text-align: right;
     font-size: 50%;
     height: 1ex;
+  }
+
+  div::after {
+    content: attr(label);
+    display: block;
+    text-align: right;
+    font-size: 50%;
+    height: 1ex;
+    font-weight: normal
   }
   .title {
     display: inline-block;
@@ -39,14 +49,14 @@
     font-size: large;
     font-weight: bold;
   }
-  .title::after {
-    content: '   title';
-    display: inline-block;
-    text-align: right;
-    font-size: 50%;
-    font-weight: lighter;
-    height: 0ex;
-  }
+  // .title::after {
+  //   content: '   title';
+  //   display: inline-block;
+  //   text-align: right;
+  //   font-size: 50%;
+  //   font-weight: lighter;
+  //   height: 0ex;
+  // }
   .definition {
     display: block;
     border: dashed 1px #8b8b8b;

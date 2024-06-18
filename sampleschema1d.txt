@@ -1,0 +1,300 @@
+
+New in this version:
+
+  no html defaults
+
+  groupname == (what|can|be|in|that|group)+
+
+  theorem-like and definition-like are on the same counter
+    (everything else is on its own separate counter)
+
+  this.name: the name for use as a tag
+  this.Name: that name, first letter uppercase (visible in HTML)
+
+  code[program, listing, console]
+
+To discuss:
+
+  tabindex
+
+--------
+
+document
+  children
+    title
+    introduction?
+    section+
+
+introduction
+  children
+    p+
+  html
+    '
+     <section id="this.id" class="introduction">
+     this.children
+     </section>
+    '
+
+section
+  children
+    title
+    (
+     (introduction?|subsection+)|
+     blocks
+    )
+  html
+    '
+     <section id="this.id" class="section">
+     this.children
+     </section>
+    ' 
+
+blocks == (p|list|figure|definition-like|theorem-like|in-class|code|paragraphs)+
+
+paragraphs
+  children
+    paragraphs-title
+    blocks
+  html
+    '
+     <section id="this.id" class="paragraphs">
+     this.children
+     </section>
+    '
+
+paragraphs-title="Title"
+  tag
+    title
+  content
+    string
+  html
+    '<hN class="heading"><span class="title">this.content</span></hN>'
+ 
+subsection
+  children
+    title
+    (
+     (introduction?|subsection+)|
+     blocks
+    )
+  html
+    '
+     <section id="this.id" class="subsection">
+     this.children
+     </section>
+    '
+
+definition-like[definition, principle, axiom]
+  counter
+    needanameforthiscounter
+  children
+    title
+    statement
+  html
+    '
+     <article class="definition-like this.name" id="this.id">
+     this.children
+     </article>
+    '
+
+code[program, listing, console]
+  children
+    input
+    output?
+  attributes
+    language["r", "python", "matlab", "xslt"]
+    margins
+      default="10%"
+  html
+    '
+     <div class="code-box" style="margin-left: this.attributes.margins; margin-right: this.attributes.margins">
+     <pre class="this.name language-this.attributes.language">
+     <code class="language-this.attributes.language">
+     this.children.input
+     </code>
+     </pre>
+     </div>
+    '
+
+
+list[ol, ul, dl]
+
+ol
+  children
+    li+
+  html
+    '<this.name id="this.id">this.children</this.name>'
+
+ul
+  children
+    li+
+  html
+    '<this.name id="this.id">this.children</this.name>'
+
+dl="terms with definitions"
+  children
+    dl-li
+  attributes
+    width?["narrow", "medium"]
+  html
+    '
+     <dl class="description-list this.attributes.width">
+     this.children
+     </dl>
+    '
+
+dl-li
+  tag
+    li
+  children
+    dl-term
+    dl-definition
+  html
+    this.children
+
+dl-term="Term"
+  tag
+    title
+  content
+    string
+  html
+    '<dt id="this.id">this.content</dt>'
+
+dl-definition="Definition"
+  children
+    p+
+  html
+    '<dd>this.content</dd>'
+
+li
+  children
+    plain-title
+    p+
+  html
+    '<this.name id="this.id">this.children</this.name>'
+
+figure
+  children
+    image
+    caption
+  html
+    '
+     <figure class="figure-like figure">
+     this.children
+     </figure>
+    '
+
+image
+  attributes
+    width
+      default="50%"
+    source[file, url]
+  children
+    description
+  html
+    '
+     <div class="image-box" style="width: this.attributes.width">
+     <img class="contained" src="this.source" alt="this.children.description">
+     </div>
+    '
+
+description
+  content
+    string
+  html
+    this.content
+
+caption
+  children
+    p+
+  html
+    '<figcaption>this.children</figcaption>'
+
+theorem-like[theorem, proposition, lemma, corollary]
+  counter
+    needanameforthiscounter
+  children
+    title
+    statement
+  html
+    '
+     <article class="theorem-like this.name">
+     this.children
+     </article>
+    '
+
+in-class="In class activity"[abcd, group-activity, classroom-activity]
+
+abcd="ABCD activity"
+  children
+    plain-title
+    ((p|paragraphs)+|file)
+  html
+    '
+     <article id="this.id" class="activity abcd">
+     this.children
+     </article>
+    '
+
+group-activity="Small group activity"
+  children
+    plain-title
+    p+
+  html
+    '
+     <article id="this.id" class="activity group">
+     this.children
+     </article>
+    '
+
+classroom-activity="Whole class activity"
+  children
+    plain-title
+    p+
+  html
+    '
+     <article id="this.id" class="activity classroom">
+     this.children
+     </article>
+    '
+
+# functionally identical to paragraphs-title
+plain-title="Title"
+  tag
+    title
+  content
+    string
+  html
+    '<hN class="heading"><span class="title">this.content</span></hN>'
+
+p
+  content
+    text
+  html
+    '<div class="para">this.content</div>'
+
+statement == (p|ol|ul)+
+
+title
+  content
+    string
+  html
+    '
+     <hN class="heading">
+     <span class="type">this.Name</span><span class="space"> </span><span class="codenumber">this.codenumber</span><span class="period">.</span>
+     </h3>
+    '
+  
+
+=================
+
+keywords
+  string
+    default=""
+  text
+    default=""
+  file
+  url
+  id
+  hN
+

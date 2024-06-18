@@ -9,15 +9,6 @@ const Title = Node.create({
 
   // defining: true,
 
-  addAttributes() {
-    return {
-      level: {
-        default: 1,
-        rendered: false,
-      },
-    }
-  },
-
   parseHTML() {
     return [
       { tag: 'title' },
@@ -27,7 +18,7 @@ const Title = Node.create({
   renderHTML({ HTMLAttributes }) {
 
     // return ['h4', {class: "heading"}, ['span', {class: "type"}, "Definition"], ['span', {class: "space"}, " " ], ['span', {class: "codenumber"}, "xx.yy"], ['span', {class: "period"}, "."], ['span', {class: "space"}, " "], ['span', {class: "title"}, 0]]
-    return ['div', mergeAttributes({class: "title"}, HTMLAttributes), 0]
+    return ['div', mergeAttributes({class: "title", label: "title"}, HTMLAttributes), 0]
   },
 
 
@@ -38,7 +29,7 @@ const Title = Node.create({
         return commands.setNode(this.name, attributes)
       },
       toggleTitle: attributes => ({ commands }) => {
-        return commands.toggleNode(this.name, 'paragraph', attributes)
+        return commands.toggleNode(this.name, 'para', attributes)
       },
     }
   },

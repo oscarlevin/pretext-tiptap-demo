@@ -1,13 +1,47 @@
 import {Extension, Node, mergeAttributes, wrappingInputRule } from '@tiptap/core'
 
+const Introduction = Node.create({
+  name: 'introduction',
+
+  content: 'para+',
+
+  group: 'division introduction',
+  
+  selectable: false,
+
+  draggable: true,
+
+  defining: false,
+
+  parseHTML() {
+    return [
+      {
+        tag: 'introduction',
+      },
+    ]
+  },
+
+  renderHTML({ HTMLAttributes }) {
+    return ['article', mergeAttributes({ class: 'introduction', label: 'introduction'}, HTMLAttributes), 0]
+  },
+
+  addInputRules() {
+    return [
+      wrappingInputRule({
+        find: new RegExp(`^#intro\\s$`),
+        type: this.type,
+      }),
+    ]
+  },
+
+})
+
 const Section = Node.create({
   name: 'section',
 
-  priority: 1000,
-
-  content: 'title? paragraph+',
+  content: 'title block+',
   
-  group: 'block division',
+  group: 'division',
 
   selectable: false,
 
@@ -23,8 +57,9 @@ const Section = Node.create({
     ]
   },
 
+
   renderHTML({ HTMLAttributes }) {
-    return ['div', mergeAttributes({ class: 'section' }, HTMLAttributes), 0]
+    return ['article', mergeAttributes({ class: 'section', label: 'section'}, HTMLAttributes), 0]
   },
 
   addInputRules() {
@@ -38,17 +73,50 @@ const Section = Node.create({
 
 })
 
+const Subsection = Node.create({
+  name: 'subsection',
 
+  content: 'title block+',
+  
+  group: 'division',
+
+  selectable: false,
+
+  draggable: true,
+
+  defining: false,
+
+  parseHTML() {
+    return [
+      {
+        tag: 'subsection',
+      },
+    ]
+  },
+
+  renderHTML({ HTMLAttributes }) {
+    return ['article', mergeAttributes({ class: 'subsection', label: 'subsection' }, HTMLAttributes), 0]
+  },
+
+  addInputRules() {
+    return [
+      wrappingInputRule({
+        find: new RegExp(`^#subsec\\s$`),
+        type: this.type,
+      }),
+    ]
+  },
+
+})
 
 const Divisions = Extension.create({
   name: 'divisions',
 
   addExtensions() {
     return [
-    //   Introduction,
-    //   Chapter,
+      Introduction,
       Section,
-    //   Subsection
+      Subsection,
     ]
   },
 })

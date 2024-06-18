@@ -1,19 +1,19 @@
-import { Color } from '@tiptap/extension-color'
-import ListItem from '@tiptap/extension-list-item'
-import TextStyle from '@tiptap/extension-text-style'
+import { Node } from '@tiptap/core'
 import { EditorProvider, useCurrentEditor } from '@tiptap/react'
-import StarterKit from '@tiptap/starter-kit'
+import { History } from '@tiptap/extension-history'
 import { Mathematics } from '@tiptap-pro/extension-mathematics'
 import 'katex/dist/katex.min.css'
 import Focus from '@tiptap/extension-focus'
+import Inline from './extensions/Inline'
+import Blocks from './extensions/Blocks'
 import Term from './extensions/Term'
 import Title from './extensions/Title'
 import Definition from './extensions/Definition'
 import React from 'react'
 import json2ptx from './extensions/json2ptx'
 import './styles.scss'
-import TheoremLike from './extensions/TheoremLike'
 import Divisions from './extensions/Divisions'
+
 
 
   const MenuBar = () => {
@@ -25,13 +25,13 @@ import Divisions from './extensions/Divisions'
   
     return (
       <>
-        <button 
+        {/* <button 
           onClick={() => editor.chain().focus().wrapIn('chapter').run()}
           disabled={!editor.can().chain().focus().wrapIn('chapter').run()}
           className={editor.isActive('chapter') ? 'is-active' : ''}
           >
         Chapter
-        </button>
+        </button> */}
 
         <button 
           onClick={() => editor.chain().focus().toggleMark('term').run()}
@@ -40,7 +40,7 @@ import Divisions from './extensions/Divisions'
           >
         term</button>
 
-        <button
+        {/* <button
           onClick={() => editor.chain().focus().toggleItalic().run()}
           disabled={
             !editor.can()
@@ -52,8 +52,8 @@ import Divisions from './extensions/Divisions'
           className={editor.isActive('italic') ? 'is-active' : ''}
         >
           emphasis
-        </button>
-        <button
+        </button> */}
+        {/* <button
           onClick={() => editor.chain().focus().toggleStrike().run()}
           disabled={
             !editor.can()
@@ -65,8 +65,8 @@ import Divisions from './extensions/Divisions'
           className={editor.isActive('strike') ? 'is-active' : ''}
         >
           strike
-        </button>
-        <button
+        </button> */}
+        {/* <button
           onClick={() => editor.chain().focus().toggleCode().run()}
           disabled={
             !editor.can()
@@ -78,19 +78,19 @@ import Divisions from './extensions/Divisions'
           className={editor.isActive('code') ? 'is-active' : ''}
         >
           code
-        </button>
+        </button> */}
         <button onClick={() => editor.chain().focus().unsetAllMarks().run()}>
           clear marks
         </button>
         <button onClick={() => editor.chain().focus().clearNodes().run()}>
           clear nodes
         </button>
-        <button
+        {/* <button
           onClick={() => editor.chain().focus().setParagraph().run()}
-          className={editor.isActive('paragraph') ? 'is-active' : ''}
+          className={editor.isActive('para') ? 'is-active' : ''}
         >
           paragraph
-        </button>
+        </button> */}
         <button
           onClick={() => editor.chain().focus().toggleTitle().run()}
           disabled={!editor.can().chain().focus().toggleTitle().run()}
@@ -98,7 +98,7 @@ import Divisions from './extensions/Divisions'
           Title
         </button>
  
-        <button
+        {/* <button
           onClick={() => editor.chain().focus().toggleBulletList().run()}
           className={editor.isActive('bulletList') ? 'is-active' : ''}
         >
@@ -109,7 +109,7 @@ import Divisions from './extensions/Divisions'
           className={editor.isActive('orderedList') ? 'is-active' : ''}
         >
           ordered list
-        </button>
+        </button> */}
         {/* <button
           onClick={() => editor.chain().focus().toggleCodeBlock().run()}
           className={editor.isActive('codeBlock') ? 'is-active' : ''}
@@ -167,46 +167,46 @@ import Divisions from './extensions/Divisions'
     )
   }
   
+  const Document = Node.create({
+    name: 'document',
+    topNode: true,
+    content: 'title introduction? section+',
+  })
+
   const extensions = [
+    Document,
+    Inline,
+    Blocks,
     Divisions,
-    TheoremLike,
     Term,
     Title,
     Definition,
     Mathematics,
     Focus,
-    Color.configure({ types: [TextStyle.name, ListItem.name] }),
-    TextStyle.configure({ types: [ListItem.name] }),
-    StarterKit.configure({
-      bulletList: {
-        keepMarks: true,
-        keepAttributes: false, // TODO : Making this as `false` becase marks are not preserved when I try to preserve attrs, awaiting a bit of help
-      },
-      orderedList: {
-        keepMarks: true,
-        keepAttributes: false, // TODO : Making this as `false` becase marks are not preserved when I try to preserve attrs, awaiting a bit of help
-      },
-    }),
+    History,
   ]
   
   const defaultContent = `
+  <title>My Document</title>
+  <introduction>
+  <p>
+    This is an introduction.  It can contain <term>terms</term> and <em>emphasis</em>.
+  </p>
+  </introduction>
+  <section>
+  <title>My Section</title>
   <p>
     This is a paragraph.  It can contain <term>terms</term> and <em>emphasis</em>.
   </p>
-  <chapter>
-  <title>
-    Tiptap Demo for my section
-  </title>
+  <theorem>
+  <title>My Theorem</title>
   <p>
     This is a paragraph in a section.  It can contain <term>terms</term> and <em>emphasis</em>.
   </p>
-  </chapter>
-  <section>
-  <title>My Lemma</title>
+  </theorem>
   <p>Lemma text here</p>
   <p>Another paragraph</p>
-  </section>
-  <p> 
+  <p>
     Welcome to this very basic demo of how tiptap can be used to edit PreTeXt.  First, a definition.
   </p>
   <definition>
@@ -241,20 +241,8 @@ import Divisions from './extensions/Divisions'
   </theorem>
 
   <p> And that's the end of the demo.  Thanks for coming!</p>
+  </section>
   `
-
-  const SchemaViewer = () => {
-    const { editor } = useCurrentEditor()
-
-    return (
-      <details>
-        <summary>Inspect Schema</summary>
-        <pre>
-          {console.log(editor.schema)}
-        </pre>
-      </details>
-    )
-  }
 
   const EditorPTXPreview = () => {
     const { editor } = useCurrentEditor()
@@ -304,7 +292,6 @@ import Divisions from './extensions/Divisions'
           slotBefore={<MenuBar />} 
           slotAfter={
             <>
-            <SchemaViewer />
             <EditorPTXPreview />
             <EditorJSONPreview/>
             <EditorHTMLPreview/> 

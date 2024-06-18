@@ -3,7 +3,7 @@ import {Extension, Node, mergeAttributes, wrappingInputRule } from '@tiptap/core
 const Theorem = Node.create({
   name: 'theorem',
 
-  content: 'title? paragraph+',
+  content: 'title? para+',
   
   group: 'block theoremLike',
 
@@ -22,7 +22,7 @@ const Theorem = Node.create({
   },
 
   renderHTML({ HTMLAttributes }) {
-    return ['div', mergeAttributes({ class: 'theorem theorem-like' }, HTMLAttributes), 0]
+    return ['div', mergeAttributes({ class: 'theorem theorem-like', label: 'theorem'}, HTMLAttributes), 0]
   },
 
   addCommands() {
@@ -39,7 +39,7 @@ const Theorem = Node.create({
   addInputRules() {
     return [
       wrappingInputRule({
-        find: new RegExp(`^!thm\\s$`),
+        find: new RegExp(`^#theorem\\s$`),
         type: this.type,
       }),
     ]
@@ -50,7 +50,7 @@ const Theorem = Node.create({
 const Lemma = Node.create({
     name: 'lemma',
     
-    content: 'title? paragraph+',
+    content: 'title? para+',
     
     group: 'block theoremLike',
     
@@ -97,7 +97,7 @@ const Lemma = Node.create({
     const Chapter = Node.create({
       name: 'chapter',
       
-      content: 'title? paragraph+',
+      content: 'title? para+',
       
       group: 'block theoremLike',
       
