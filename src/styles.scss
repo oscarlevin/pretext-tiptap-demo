@@ -1,10 +1,12 @@
 /* Basic editor styles */
+
 .tiptap {
   margin-top: 1rem;
 
   > * + * {
     margin-top: 0.75em;
   }
+
 
   .has-focus {
     border-radius: 0.25rem;

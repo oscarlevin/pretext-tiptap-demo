@@ -52,3 +52,8 @@
   border-top: 2px solid rgba(13, 13, 13, 0.1);
   margin: 2rem 0;
 }
+
+.is-active {
+  background-color: #0b1e32;
+  color: #fff;
+}

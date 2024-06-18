@@ -1,6 +1,8 @@
-import { Mark, mergeAttributes, markInputRule } from '@tiptap/core'
+import { Mark, mergeAttributes, markInputRule, markPasteRule } from '@tiptap/core'
 
 export const inputPTXRegex = /(?:^|\s)(<term>(.*?)<\/term>)$/
+export const pastePTXRegex = /(?:^|\s)(<term>(.*?)<\/term>)/g
+
 export const inputMDRegex = /(?:^|\s)(\*(.*?)\*)$/
 export const inputRegex = /(?:^|\s)`t\s$/
 
@@ -22,19 +24,20 @@ const Definition = Mark.create({
     return ['span',mergeAttributes({class: 'term'}, HTMLAttributes), 0]
   },
 
-  addCommands() {
-    return {
-      setTerm: () => ({ commands }) => {
-        return commands.setMark(this.name)
-      },
-      toggleTerm: () => ({ commands }) => {
-        return commands.toggleMark(this.name)
-      },
-      unsetTerm: () => ({ commands }) => {
-        return commands.unsetMark(this.name)
-      },
-    }
-  },
+  // The following works, but since we will have so many, we probably just want to use the toggleMark('term') command directly.
+  // addCommands() {
+  //   return {
+  //     setTerm: () => ({ commands }) => {
+  //       return commands.setMark(this.name)
+  //     },
+  //     toggleTerm: () => ({ commands }) => {
+  //       return commands.toggleMark(this.name)
+  //     },
+  //     unsetTerm: () => ({ commands }) => {
+  //       return commands.unsetMark(this.name)
+  //     },
+  //   }
+  // },
 
   addKeyboardShortcuts() {
     return {
@@ -54,6 +57,14 @@ const Definition = Mark.create({
       }),
       markInputRule({
         find: inputMDRegex,
+        type: this.type,
+      }),
+    ]
+  },
+  addPasteRules() {
+    return [
+      markPasteRule({
+        find: pastePTXRegex,
         type: this.type,
       }),
     ]

@@ -1,20 +1,13 @@
-import { Node, mergeAttributes, textblockTypeInputRule } from '@tiptap/core'
+import { Node, mergeAttributes, textblockTypeInputRule, } from '@tiptap/core'
 
 const Title = Node.create({
   name: 'title',
 
-  addOptions() {
-    return {
-      levels: [1, 2, 3, 4, 5, 6],
-      HTMLAttributes: {},
-    }
-  },
+  content: 'text*',
 
-  content: 'inline*',
+  group: 'title',
 
-  group: 'block title',
-
-  defining: true,
+  // defining: true,
 
   addAttributes() {
     return {
@@ -26,11 +19,9 @@ const Title = Node.create({
   },
 
   parseHTML() {
-    return this.options.levels
-      .map((level) => ({
-        tag: `h${level}`,
-        attrs: { level },
-      }))
+    return [
+      { tag: 'title' },
+    ]
   },
 
   renderHTML({ HTMLAttributes }) {
@@ -52,14 +43,6 @@ const Title = Node.create({
     }
   },
 
-  addKeyboardShortcuts() {
-    return this.options.levels.reduce((items, level) => ({
-      ...items,
-      ...{
-        [`Mod-Alt-t`]: () => this.editor.commands.toggleTitle({ level }),
-      },
-    }), {})
-  },
 
   addInputRules() {
     return [
@@ -69,6 +52,7 @@ const Title = Node.create({
       }),
     ]
   },
+
 })
 
 

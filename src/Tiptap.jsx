@@ -12,6 +12,7 @@ import Definition from './extensions/Definition'
 import React from 'react'
 import json2ptx from './extensions/json2ptx'
 import './styles.scss'
+import TheoremLike from './extensions/TheoremLike'
 
 
   const MenuBar = () => {
@@ -24,8 +25,8 @@ import './styles.scss'
     return (
       <>
         <button 
-          onClick={() => editor.chain().focus().toggleTerm().run()}
-          disabled={!editor.can().chain().focus().toggleTerm().run()}
+          onClick={() => editor.chain().focus().toggleMark('term').run()}
+          disabled={!editor.can().chain().focus().toggleMark('term').run()}
           className={editor.isActive('term') ? 'is-active' : ''}
           >
         term</button>
@@ -158,6 +159,7 @@ import './styles.scss'
   }
   
   const extensions = [
+    TheoremLike,
     Term,
     Title,
     Definition,
@@ -181,13 +183,25 @@ import './styles.scss'
   <h1>
     Tiptap Demo
   </h1>
+  <lemma>
+  <title>My Lemma</title>
+  <p>Lemma text here</p>
+  <p>Another paragraph</p>
+  </lemma>
   <p>
     Welcome to this very basic demo of how tiptap can be used to edit PreTeXt.  First, a definition.
   </p>
   <definition>
-  A <term>definition block</term> is a section of text that contains a definition.
-  </definition>
+  <title>Title of Definition</title>
+
   <p>
+  A <term>definition block</term> is a section of text that contains a definition.
+  </p>
+  <p> Another paragraph </p>
+
+  </definition>
+  
+<p>
   <ul>
     <li>
       That’s a bullet list with one …
@@ -200,6 +214,14 @@ import './styles.scss'
   <p>
     Pretty neat, huh?  Oh yeah, and it can do some math: $\\int_1^2 x^2 dx = \\frac{7}{3}$.  I don't know if you can do display math though.
   </p>
+  <theorem>
+    <title>My Theorem</title>
+
+    <p>This is a theorem</p>
+    <p>Another paragraph</p>
+  </theorem>
+
+  <p> And that's the end of the demo.  Thanks for coming!</p>
   `
 
   const EditorPTXPreview = () => {

@@ -11,7 +11,11 @@ const Definition = Node.create({
 
   draggable: true,
 
-  // defining: true,
+  defining: false,
+
+  
+  // This would make it so an extra delete would not delete the parent node.  Not sure how we would end up deleting it. 
+  // isolating: true,
 
   parseHTML() {
     return [
