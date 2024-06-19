@@ -1,19 +1,19 @@
 import {Extension, Node, mergeAttributes, wrappingInputRule, nodeInputRule } from '@tiptap/core'
 
 
-const TheoremLikeElements = ["theorem", "lemma", "corollary", "proposition", "claim", "fact"]
+const AxiomLikeElements = ["assumption", "axiom", "conjecture", "heuristic", "hypothesis", "principle"]
 
 
-const TheoremLike = Extension.create({
-  name: 'theoremLike',
+const AxiomLike = Extension.create({
+  name: 'axiomLike',
 
   addExtensions() {
     const array = []
-    for (let element of TheoremLikeElements) {
+    for (let element of AxiomLikeElements) {
       array.push(Node.create({
         name: element,
         content: 'title? para+',
-        group: 'block theoremLike',
+        group: 'block axiomLike',
         selectable: true,
         draggable: true,
         parseHTML() {
@@ -24,7 +24,7 @@ const TheoremLike = Extension.create({
           ]
         },
         renderHTML({ HTMLAttributes }) {
-          return ['article', mergeAttributes({ class: `${element} theorem-like`, label: element }, HTMLAttributes), 0]
+          return ['article', mergeAttributes({ class: `${element} axiom-like`, label: element }, HTMLAttributes), 0]
         },
         addCommands() {
           return {
@@ -52,4 +52,4 @@ const TheoremLike = Extension.create({
   },
 })
 
-export default TheoremLike;
+export default AxiomLike;

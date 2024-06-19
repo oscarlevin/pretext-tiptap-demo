@@ -1,5 +1,7 @@
 import {Extension, Node, mergeAttributes, wrappingInputRule } from '@tiptap/core'
 import TheoremLike from './TheoremLike'
+import AxiomLike from './AxiomLike'
+
 
 const Para = Node.create({
   name: 'para',
@@ -45,6 +47,7 @@ const Blocks = Extension.create({
     return [
         Para,
         TheoremLike,
+        AxiomLike,
     ]
   },
 })

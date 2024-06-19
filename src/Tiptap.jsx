@@ -230,6 +230,17 @@ const InfoMessage = () => {
   <p>
     Welcome to this very basic demo of how tiptap can be used to edit PreTeXt.  First, a definition.
   </p>
+
+  <conjecture>
+  <title>Title of Conjecture</title>
+
+  <p>
+  A <term>conjecture</term> is somethign you hope is true.
+  </p>
+  <p> Another paragraph </p>
+    
+  </conjecture>
+
   <definition>
   <title>Title of Definition</title>
 
@@ -239,6 +250,15 @@ const InfoMessage = () => {
   <p> Another paragraph </p>
 
   </definition>
+
+  <assumption>
+  <title>Title of Assumption</title>
+
+  <p>
+  An <term>assumption</term> is something you assume.
+  </p>
+
+  </assumption>
   
 <p>
   <ul>
@@ -320,6 +340,12 @@ const InfoMessage = () => {
             className={!editor.can().chain().focus().wrapIn('theorem').run() ?'hide-button': ''}
           >
             Theorem
+          </button>
+          <button
+            onClick={() => editor.chain().focus().wrapIn('conjecture').run()}
+            className={!editor.can().chain().focus().wrapIn('conjecture').run() ?'hide-button': ''}
+          >
+            Conjecture
           </button>
           <button
             onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
