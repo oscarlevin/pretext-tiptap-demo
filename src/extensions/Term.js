@@ -39,11 +39,11 @@ const Definition = Mark.create({
   //   }
   // },
 
-  addKeyboardShortcuts() {
-    return {
-      'Mod-d': () => this.editor.commands.toggleTerm()
-    }
-  },
+  // addKeyboardShortcuts() {
+  //   return {
+  //     'Mod-d': () => this.editor.commands.toggleTerm()
+  //   }
+  // },
 
   addInputRules() {
     return [

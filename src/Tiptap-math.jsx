@@ -1,12 +1,48 @@
-import { EditorProvider, useCurrentEditor } from '@tiptap/react'
+import { EditorProvider, useCurrentEditor, FloatingMenu } from '@tiptap/react'
+import { Node, mergeAttributes, wrappingInputRule } from '@tiptap/core'
 import StarterKit from '@tiptap/starter-kit'
 import { Mathematics } from '@tiptap-pro/extension-mathematics'
 import 'katex/dist/katex.min.css'
 import React from 'react'
 
+const Para = Node.create({
+  name: 'para',
+  // priority: 2000,
+  content: 'inline*',
+  
+  group: 'block',
 
+//   selectable: false,
+
+  draggable: true,
+
+  defining: false,
+
+  parseHTML() {
+    return [
+      {
+        tag: 'p',
+      },
+    ]
+  },
+
+  renderHTML({ HTMLAttributes }) {
+    return ['div', mergeAttributes({ class: 'para', label: 'p' }, HTMLAttributes), 0]
+  },
+
+  addInputRules() {
+    return [
+      wrappingInputRule({
+        find: new RegExp(`^#p\\s$`),
+        type: this.type,
+      }),
+    ]
+  },
+
+})
  
   const extensions = [
+    Para,
     StarterKit,
     Mathematics,
   ]
@@ -41,7 +77,33 @@ import React from 'react'
         <li>$\\left\\{\\begin{matrix}x&\\text{if }x>0\\\\0&\\text{otherwise}\\end{matrix}\\right.$</li>
       </ul>
   `
-
+const MyFloatingMenu = () => {
+  const { editor } = useCurrentEditor()
+  return (
+    <FloatingMenu>
+      <div className="floating-menu">
+        <button
+          onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
+          className={editor.isActive('heading', { level: 1 }) ? 'is-active' : ''}
+        >
+          H1
+        </button>
+        <button
+          onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
+          className={editor.isActive('heading', { level: 2 }) ? 'is-active' : ''}
+        >
+          H2
+        </button>
+        <button
+          onClick={() => editor.chain().focus().toggleBulletList().run()}
+          className={editor.isActive('bulletList') ? 'is-active' : ''}
+        >
+          Bullet list
+        </button>
+      </div>
+    </FloatingMenu>
+  )
+}
   
   const EditorJSONPreview = () => {
     const { editor } = useCurrentEditor()
@@ -60,8 +122,11 @@ import React from 'react'
   }
   
  const TiptapMath = () => {
+  // const { editor } = useCurrentEditor() 
       return (
-          <EditorProvider slotAfter={<EditorJSONPreview/>} extensions={extensions} content={content}/>
+          <EditorProvider slotAfter={<EditorJSONPreview/>} extensions={extensions} content={content}>
+            <MyFloatingMenu />
+          </EditorProvider>
           )
     }
         

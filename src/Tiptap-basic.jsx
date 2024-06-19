@@ -1,37 +1,21 @@
-import { useEditor, EditorContent, EditorProvider, FloatingMenu, BubbleMenu, useCurrentEditor } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
-import React from "react";
+// src/Tiptap.jsx
+import { EditorProvider, FloatingMenu, BubbleMenu } from '@tiptap/react'
+import StarterKit from '@tiptap/starter-kit'
 
-
+// define your extension array
 const extensions = [
   StarterKit,
 ]
 
-
-const content = `<p>Hello World! 🌎️</p>`
-
-const EditorJSONPreview = () => {
-  const { editor } = useCurrentEditor
-
-  return (
-    <pre>
-      {JSON.stringify(editor.getJSON(), null, 2)}
-    </pre>
-  )
-}
+const content = '<p>Hello World!</p>'
 
 const Tiptap = () => {
-
-  // const editor = useEditor({
-  //   extensions,
-  //   content,
-  //   // extensions: [StarterKit],
-  //   // content: "<p>Hello World! 🌎️</p>",
-  // });
-
   return (
-    <EditorProvider slotAfter={<EditorJSONPreview/>} extensions={extensions} content={content}/>
+    <EditorProvider extensions={extensions} content={content}>
+      <FloatingMenu>This is the floating menu</FloatingMenu>
+      <BubbleMenu>This is the bubble menu</BubbleMenu>
+    </EditorProvider>
   )
 }
 
-export default Tiptap;
+export default Tiptap

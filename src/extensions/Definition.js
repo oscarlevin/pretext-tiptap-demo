@@ -26,7 +26,7 @@ const Definition = Node.create({
   },
 
   renderHTML({ HTMLAttributes }) {
-    return ['div', mergeAttributes({ class: 'definition definition-like', label: 'def' }, HTMLAttributes), 0]
+    return ['article', mergeAttributes({ class: 'definition definition-like', label: 'definition' }, HTMLAttributes), 0]
   },
 
   addCommands() {
@@ -48,6 +48,12 @@ const Definition = Node.create({
       }),
     ]
   },
+
+  addKeyboardShortcuts() {
+    return {
+      'Mod-d': this.editor.commands.insertContent('<definition><title>Definition</title><p></p></definition>'),
+    }
+  }
 
 })
 

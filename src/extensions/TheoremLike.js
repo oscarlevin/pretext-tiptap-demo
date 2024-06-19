@@ -24,16 +24,16 @@ const TheoremLike = Extension.create({
           ]
         },
         renderHTML({ HTMLAttributes }) {
-          return ['div', mergeAttributes({ class: `${element} theorem-like`, label: element }, HTMLAttributes), 0]
+          return ['article', mergeAttributes({ class: `${element} theorem-like`, label: element }, HTMLAttributes), 0]
         },
         addCommands() {
           return {
             [`set${element.charAt(0).toUpperCase() + element.slice(1)}`]: attributes => ({ commands }) => {
               return commands.setWrap(this.name, attributes)
             },
-            [`toggle${element.charAt(0).toUpperCase() + element.slice(1)}`]: attributes => ({ commands }) => {
-              return commands.toggleWrap(this.name, attributes)
-            },
+            // [`toggle${element.charAt(0).toUpperCase() + element.slice(1)}`]: attributes => ({ commands }) => {
+            //   return commands.toggleWrap(this.name, attributes)
+            // },
           }
         },
         addInputRules() {
@@ -47,7 +47,7 @@ const TheoremLike = Extension.create({
       }))
 
     }
-    
+
     return array
   },
 })

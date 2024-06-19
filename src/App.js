@@ -1,5 +1,4 @@
 import Tiptap from "./Tiptap.jsx";
-import TiptapMath from "./Tiptap-math.jsx";
 import Intro from './Content.jsx';
 import './App.css';
 

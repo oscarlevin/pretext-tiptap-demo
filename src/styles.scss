@@ -1,5 +1,9 @@
 /* Basic editor styles */
 
+.hide-button {
+  display: none;
+}
+
 .tiptap {
   margin-top: 1rem;
 
@@ -19,19 +23,24 @@
     font-style: italic;
   }
 
-  div, article {
+  div, article, section {
     border: dashed 1px #8b8b8b;
     padding: 1ex;
     margin: 1ex;
     background-color: #ffffff;
   }
 
-  article::before {
-    content: attr(class);
+  article::before, section::before {
+    content: attr(label);
     display: block;
     text-align: right;
     font-size: 50%;
-    height: 1ex;
+    height: 2ex;
+    top: 0;
+  }
+
+  .hidden {
+    visibility: hidden;
   }
 
   div::after {
@@ -57,27 +66,27 @@
   //   font-weight: lighter;
   //   height: 0ex;
   // }
-  .definition {
-    display: block;
-    border: dashed 1px #8b8b8b;
-    padding: 0.25ex;
-    background-color: #b3c6e0;
-  }
-  .definition::before{
-    content: 'Definition. ';
-    display: inline-block;
-    text-align: left;
-    margin-top: -.5ex;
-    font-size: 110%;
-    font-weight: bold;
-  }
-  .definition::after {
-    content: 'definition';
-    display: block;
-    text-align: right;
-    font-size: 50%;
-    height: 2ex;
-  }
+  // .definition {
+  //   display: block;
+  //   border: dashed 1px #8b8b8b;
+  //   padding: 0.25ex;
+  //   background-color: #b3c6e0;
+  // }
+  // .definition::before{
+  //   content: 'Definition. ';
+  //   display: inline-block;
+  //   text-align: left;
+  //   margin-top: -.5ex;
+  //   font-size: 110%;
+  //   font-weight: bold;
+  // }
+  // .definition::after {
+  //   content: 'definition';
+  //   display: block;
+  //   text-align: right;
+  //   font-size: 50%;
+  //   height: 2ex;
+  // }
   ul,
   ol {
     border: dashed 1px #2f3d36;

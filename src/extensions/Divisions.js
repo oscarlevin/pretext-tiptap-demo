@@ -7,7 +7,7 @@ const Introduction = Node.create({
 
   group: 'division introduction',
   
-  selectable: false,
+  selectable: true,
 
   draggable: true,
 
@@ -39,11 +39,11 @@ const Introduction = Node.create({
 const Section = Node.create({
   name: 'section',
 
-  content: 'title block+',
+  content: 'title ((introduction?|subsection+)|block+)',
   
   group: 'division',
 
-  selectable: false,
+  selectable: true,
 
   draggable: true,
 
@@ -59,7 +59,7 @@ const Section = Node.create({
 
 
   renderHTML({ HTMLAttributes }) {
-    return ['article', mergeAttributes({ class: 'section', label: 'section'}, HTMLAttributes), 0]
+    return ['section', mergeAttributes({ class: 'section', label: 'section'}, HTMLAttributes), 0]
   },
 
   addInputRules() {
@@ -95,7 +95,7 @@ const Subsection = Node.create({
   },
 
   renderHTML({ HTMLAttributes }) {
-    return ['article', mergeAttributes({ class: 'subsection', label: 'subsection' }, HTMLAttributes), 0]
+    return ['section', mergeAttributes({ class: 'subsection', label: 'subsection' }, HTMLAttributes), 0]
   },
 
   addInputRules() {
