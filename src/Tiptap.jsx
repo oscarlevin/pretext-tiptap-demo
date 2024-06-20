@@ -18,7 +18,16 @@ import Divisions from './extensions/Divisions'
 
 const InfoMessage = () => {
   const { editor } = useCurrentEditor()
+  const cursor = {
+    pos: editor.state.selection.$anchor.pos,
+    node: (editor.state.selection.$anchor.before ? editor.state.selection.$anchor.before() : editor.state.selection.$anchor.parent),
+    nodeAfter: (editor.state.selection.$anchor.after.name),
+    nodeBefore: editor.state.selection.$anchor.nodeBefore,
+  }
   console.log(editor.state.selection.$anchor)
+  let currentPos = editor.$pos(editor.state.selection.$anchor.pos)
+  const $myCustomPos = editor.$pos(editor.state.selection.$anchor.pos)
+  const $prevPos = $myCustomPos.after.pos > 0 ? $myCustomPos.after.pos : 0
   return (
     <div className="info">
       <p>
@@ -28,6 +37,9 @@ const InfoMessage = () => {
         <li>
       Position: {editor.state.selection.anchor}
 
+        </li>
+        <li>
+          Node Position: {cursor.nodeAfter}
         </li>
       <li>
 
@@ -194,16 +206,22 @@ const InfoMessage = () => {
       </>
     )
   }
-  
 
   const MyKeyboardShortcuts = Extension.create({
     name: 'myKeyboardShortcuts',
 
     addKeyboardShortcuts() {
+      let currentPos = this.editor.$pos(this.editor.state.selection.$anchor.pos)
+
       return {
         'Mod-b': () => this.editor.chain().focus().setContent(defaultContent).run(),
         'Mod-q': () => this.editor.commands.blur(),
+        // Escape moves focus to parent node.
         'Escape': () => this.editor.commands.selectParentNode(),
+        'Mod-Right': () => this.editor.commands.selectNodeForward(),
+        'Mod-Down': () => this.editor.commands.selectNodeForward(),
+        'Alt-ArrowUp': () => this.editor.commands.setNodeSelection(currentPos.before ? currentPos.before.pos : currentPos.pos),
+        'Alt-ArrowDown': () => this.editor.commands.setNodeSelection(currentPos.after ? currentPos.after.pos : currentPos.pos),
       }
     },
   })
@@ -372,7 +390,7 @@ const InfoMessage = () => {
   const MyFloatingMenu = () => {
     const { editor } = useCurrentEditor()
     return (
-      <FloatingMenu shouldShow={() => {return (editor.isActive('para') && editor.state.selection.$anchor.textOffset === 0)}}>
+      <FloatingMenu shouldShow={() => {return (editor.isActive('para') && false)}}>
         {/* <nav className="floating-menu">
         <ul tabIndex="0">
           <li 
