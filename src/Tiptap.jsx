@@ -54,12 +54,12 @@ const getCursorPos = (editor) => {
 const InfoMessage = () => {
   const { editor } = useCurrentEditor()
   const cursor = getCursorPos(editor)
-  // editor.state.selection.$anchor.nodeBefore.type.name 
+  // editor.state.selection.$anchor.nodeBefore.type.name
   let currentPos = editor.$pos(editor.state.selection.$anchor.pos)
   return (
     <div className="info">
       <p>
-      Dubugging Info: 
+      Dubugging Info:
       </p>
       <ul>
         <li>Position: {cursor.pos()}</li>
@@ -79,17 +79,17 @@ const InfoMessage = () => {
 
   const MenuBar = () => {
     const { editor } = useCurrentEditor()
-  
+
     if (!editor) {
       return null
     }
-  
+
     return (
       <>
         <button
           onClick={() => editor.chain().focus().insertContent(`<definition><title>Definition</title><p></p></definition>`).run()}
           >Testing</button>
-        {/* <button 
+        {/* <button
           onClick={() => editor.chain().focus().wrapIn('chapter').run()}
           disabled={!editor.can().chain().focus().wrapIn('chapter').run()}
           className={editor.isActive('chapter') ? 'is-active' : ''}
@@ -97,7 +97,7 @@ const InfoMessage = () => {
         Chapter
         </button> */}
 
-        <button 
+        <button
           onClick={() => editor.chain().focus().toggleMark('term').run()}
           disabled={!editor.can().chain().focus().toggleMark('term').run()}
           className={editor.isActive('term') ? 'is-active' : ''}
@@ -161,7 +161,7 @@ const InfoMessage = () => {
         >
           Title
         </button>
- 
+
         {/* <button
           onClick={() => editor.chain().focus().toggleBulletList().run()}
           className={editor.isActive('bulletList') ? 'is-active' : ''}
@@ -233,7 +233,7 @@ const InfoMessage = () => {
 
   const MyKeyboardShortcuts = Extension.create({
     name: 'myKeyboardShortcuts',
-    
+
     addKeyboardShortcuts() {
       const cursor = getCursorPos(this.editor)
       return {
@@ -248,7 +248,7 @@ const InfoMessage = () => {
         // ArrowDown should move the cursor to the next node at the same depth if on a box.  If in a text node, do the default.
         'ArrowDown': () => {
           if (cursor.inTextNode()) {return false}
-          else {this.editor.commands.focus(cursor.pos()+cursor.nextNodeSize(),true); return true} 
+          else {this.editor.commands.focus(cursor.pos()+cursor.nextNodeSize(),true); return true}
         },
         // ArrowUp should move the cursor to the start of the previous node at the same depth if on a box.  If in a text node, do the default.
         'ArrowUp': () => {
@@ -261,13 +261,13 @@ const InfoMessage = () => {
             this.editor.commands.setHardBreak();
             return true
           } else {
-            this.editor.commands.focus(cursor.pos()+1,true);
-            return true
+            toggleMenu()
+ //           this.editor.commands.focus(cursor.pos()+1,true);
+ //           return true
           }
         },
         'Mod-b': () => this.editor.chain().focus().setContent(defaultContent).run(),
         'Mod-q': () => this.editor.commands.blur(),
-        'Mod-m': () => toggleMenu(),
         // Escape moves focus to parent node.
         'Escape': () => this.editor.commands.selectParentNode(),
         'Mod-Right': () => this.editor.commands.selectNodeForward(),
@@ -309,7 +309,7 @@ var x = document.getElementById("menuid");
     Focus,
     History,
   ]
-  
+
   const defaultContent = `
   <title>My Document</title>
   <introduction>
@@ -352,7 +352,7 @@ var x = document.getElementById("menuid");
   A <term>conjecture</term> is somethign you hope is true.
   </p>
   <p> Another paragraph </p>
-    
+
   </conjecture>
 
   <definition>
@@ -373,7 +373,7 @@ var x = document.getElementById("menuid");
   </p>
 
   </assumption>
-  
+
   <ul>
     <li>
       That’s a bullet list with one …
@@ -415,7 +415,7 @@ var x = document.getElementById("menuid");
 
   const EditorJSONPreview = () => {
     const { editor } = useCurrentEditor()
-  
+
     return (
       <details>
         <summary>Inspect JSON</summary>
@@ -428,7 +428,7 @@ var x = document.getElementById("menuid");
 
   const EditorHTMLPreview = () => {
     const { editor } = useCurrentEditor()
-  
+
     return (
       <details>
         <summary>Inspect HTML</summary>
@@ -448,7 +448,7 @@ var x = document.getElementById("menuid");
       <FloatingMenu shouldShow={() => {return (editor.isActive('para') && false)}}>
         {/* <nav className="floating-menu">
         <ul tabIndex="0">
-          <li 
+          <li
             className={!editor.can().chain().focus().wrapIn('theorem').run() ?'hide-button': ''}>Thereom-like
             <ul>
               <li>Theorem</li>
@@ -458,7 +458,7 @@ var x = document.getElementById("menuid");
         </ul>
         </nav> */}
         <div className="floating-menu" >
-          <button 
+          <button
             onClick={() => editor.chain().focus().wrapIn('theorem').run()}
             className={!editor.can().chain().focus().wrapIn('theorem').run() ?'hide-button': ''}
           >
@@ -490,24 +490,24 @@ var x = document.getElementById("menuid");
  const Tiptap = () => {
   const { editor } = useCurrentEditor()
       return (
-        <EditorProvider 
+        <EditorProvider
           slotBefore={
             <>
-            <MenuBar /> 
+            <MenuBar />
             <InfoMessage/>
             <MenuExample/>
             </>
-          } 
+          }
           slotAfter={
             <>
             <EditorPTXPreview />
             <EditorJSONPreview/>
-            <EditorHTMLPreview/> 
+            <EditorHTMLPreview/>
             </>
-          } 
-          extensions={extensions} 
+          }
+          extensions={extensions}
           content={
-            JSON.parse(window.localStorage.getItem('editor-content')) || 
+            JSON.parse(window.localStorage.getItem('editor-content')) ||
             defaultContent
           }
           onUpdate={ ({ editor }) => {
@@ -521,5 +521,5 @@ var x = document.getElementById("menuid");
         </EditorProvider>
       )
     }
-        
+
 export default Tiptap;
