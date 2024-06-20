@@ -15,7 +15,26 @@ import json2ptx from './extensions/json2ptx'
 import './styles.scss'
 import './style_oscarlevin.css'
 import Divisions from './extensions/Divisions'
+import * as Ariakit from "@ariakit/react";
+import "./menu.css";
 
+const MenuExample = () => {
+  return (
+    <Ariakit.MenuProvider>
+      <Ariakit.Menu gutter={8} className="menu" id="menuid">
+        <Ariakit.MenuItem className="menu-item">
+          enter this box
+        </Ariakit.MenuItem>
+        <Ariakit.MenuSeparator className="separator" />
+        <Ariakit.MenuItem className="menu-item">insert before...</Ariakit.MenuItem>
+        <Ariakit.MenuItem className="menu-item">insert after...</Ariakit.MenuItem>
+        <Ariakit.MenuItem className="menu-item">move</Ariakit.MenuItem>
+        <Ariakit.MenuItem className="menu-item">delete</Ariakit.MenuItem>
+        <Ariakit.MenuItem className="menu-item">convert [name] to...</Ariakit.MenuItem>
+      </Ariakit.Menu>
+    </Ariakit.MenuProvider>
+  );
+}
 
 const getCursorPos = (editor) => {
   const currentPos = editor.$pos(editor.state.selection.$anchor.pos)
@@ -248,6 +267,7 @@ const InfoMessage = () => {
         },
         'Mod-b': () => this.editor.chain().focus().setContent(defaultContent).run(),
         'Mod-q': () => this.editor.commands.blur(),
+        'Mod-m': () => toggleMenu(),
         // Escape moves focus to parent node.
         'Escape': () => this.editor.commands.selectParentNode(),
         'Mod-Right': () => this.editor.commands.selectNodeForward(),
@@ -257,6 +277,18 @@ const InfoMessage = () => {
       }
     },
   })
+
+  function toggleMenu() {
+var x = document.getElementById("menuid");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
+  console.log("can you see the menu?");
+  return(true)
+  };
+
 
   const Document = Node.create({
     name: 'document',
@@ -463,6 +495,7 @@ const InfoMessage = () => {
             <>
             <MenuBar /> 
             <InfoMessage/>
+            <MenuExample/>
             </>
           } 
           slotAfter={
