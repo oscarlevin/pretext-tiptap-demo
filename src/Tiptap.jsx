@@ -203,7 +203,7 @@ const InfoMessage = () => {
       return {
         'Mod-b': () => this.editor.chain().focus().setContent(defaultContent).run(),
         'Mod-q': () => this.editor.commands.blur(),
-        'Mod-Alt-n': () => this.editor.commands.selectParentNode(),
+        'Escape': () => this.editor.commands.selectParentNode(),
       }
     },
   })
