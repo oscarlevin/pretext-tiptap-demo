@@ -41,6 +41,7 @@ const InfoMessage = () => {
     <div className="info">
       <p>
       Dubugging Info: 
+      </p>
       <ul>
         <li>Position: {cursor.pos()}</li>
         <li> Parent Type: {cursor.parentType()}</li>
@@ -51,7 +52,6 @@ const InfoMessage = () => {
         <li> Previous node size: {cursor.prevNodeSize()}</li>
         <li> In text node? {cursor.inTextNode() ? "Yes" : "No"}</li>
       </ul>
-      </p>
     </div>
   )
 }
@@ -342,7 +342,6 @@ const InfoMessage = () => {
 
   </assumption>
   
-<p>
   <ul>
     <li>
       That’s a bullet list with one …
@@ -351,7 +350,6 @@ const InfoMessage = () => {
       … or two list items.
     </li>
   </ul>
-</p>
 
   <p>
     Pretty neat, huh?  Oh yeah, and it can do some math: $\\int_1^2 x^2 dx = \\frac{7}{3}$.  I don't know if you can do display math though.
