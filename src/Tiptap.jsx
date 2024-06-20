@@ -1,4 +1,4 @@
-import { Node } from '@tiptap/core'
+import { Node, Extension } from '@tiptap/core'
 import { EditorProvider, useCurrentEditor, FloatingMenu} from '@tiptap/react'
 import { History } from '@tiptap/extension-history'
 // import FloatingMenu from '@tiptap/extension-floating-menu'
@@ -13,6 +13,7 @@ import Definition from './extensions/Definition'
 import React from 'react'
 import json2ptx from './extensions/json2ptx'
 import './styles.scss'
+import './style_oscarlevin.css'
 import Divisions from './extensions/Divisions'
 
 const InfoMessage = () => {
@@ -20,8 +21,20 @@ const InfoMessage = () => {
   console.log(editor.state.selection.$anchor)
   return (
     <div className="info">
-      
-      Info. Position: {editor.state.selection.anchor}
+      <p>
+
+      Dubugging Info: 
+      <ul>
+        <li>
+      Position: {editor.state.selection.anchor}
+
+        </li>
+      <li>
+
+      Content: {editor.state.selection.$anchor.textOffset}
+      </li>
+      </ul>
+      </p>
     </div>
   )
 }
@@ -182,13 +195,34 @@ const InfoMessage = () => {
     )
   }
   
+
+  const MyKeyboardShortcuts = Extension.create({
+    name: 'myKeyboardShortcuts',
+
+    addKeyboardShortcuts() {
+      return {
+        'Mod-b': () => this.editor.chain().focus().setContent(defaultContent).run(),
+        'Mod-q': () => this.editor.commands.blur(),
+        'Mod-Alt-n': () => this.editor.commands.selectParentNode(),
+      }
+    },
+  })
+
   const Document = Node.create({
     name: 'document',
     topNode: true,
-    content: 'title para* introduction? section+',
+    content: 'title introduction? section+',
+
+
+    // addKeyboardShortcuts() {
+    //   return {
+    //     // 'Mod-b': () => this.editor.commands.showMenu(),
+    //   }
+    // },
   })
 
   const extensions = [
+    MyKeyboardShortcuts,
     Document,
     Inline,
     Blocks,
@@ -213,6 +247,11 @@ const InfoMessage = () => {
   <p>
     This is a paragraph.  It can contain <term>terms</term> and <em>emphasis</em>.
   </p>
+  <fact>
+  <p>
+  This is a fact.
+  </p>
+  </fact>
   <corollary>
   <title>My Corollary</title>
   <p>
@@ -300,9 +339,9 @@ const InfoMessage = () => {
     return (
       <details>
         <summary>Inspect HTML</summary>
-        <pre>
+        <p>
           {editor.getHTML()}
-        </pre>
+        </p>
       </details>
     )
   }
@@ -313,9 +352,20 @@ const InfoMessage = () => {
   const MyFloatingMenu = () => {
     const { editor } = useCurrentEditor()
     return (
-      <FloatingMenu shouldShow={() => {return editor.isActive('para')}}>
-        <div className="floating-menu">
-          <button
+      <FloatingMenu shouldShow={() => {return (editor.isActive('para') && editor.state.selection.$anchor.textOffset === 0)}}>
+        {/* <nav className="floating-menu">
+        <ul tabIndex="0">
+          <li 
+            className={!editor.can().chain().focus().wrapIn('theorem').run() ?'hide-button': ''}>Thereom-like
+            <ul>
+              <li>Theorem</li>
+              <li>Lemma</li>
+            </ul>
+            </li>
+        </ul>
+        </nav> */}
+        <div className="floating-menu" >
+          <button 
             onClick={() => editor.chain().focus().wrapIn('theorem').run()}
             className={!editor.can().chain().focus().wrapIn('theorem').run() ?'hide-button': ''}
           >

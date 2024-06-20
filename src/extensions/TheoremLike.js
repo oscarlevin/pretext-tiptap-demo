@@ -8,6 +8,7 @@ const TheoremLike = Extension.create({
   name: 'theoremLike',
 
   addExtensions() {
+
     const array = []
     for (let element of TheoremLikeElements) {
       array.push(Node.create({
@@ -24,7 +25,7 @@ const TheoremLike = Extension.create({
           ]
         },
         renderHTML({ HTMLAttributes }) {
-          return ['article', mergeAttributes({ class: `${element} theorem-like`, label: element }, HTMLAttributes), 0]
+          return ['article', mergeAttributes({ class: `${element} theorem-like`, label: element, tabindex: 0 }, HTMLAttributes), 0]
         },
         addCommands() {
           return {

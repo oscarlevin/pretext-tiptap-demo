@@ -4,6 +4,53 @@
   display: none;
 }
 
+/* Floating menu */
+.floating-menu {
+  display: block;
+  background-color: var(--gray-3);
+  padding: 0.1rem;
+  border-radius: 0.5rem;
+
+  ul { 
+    list-style: none;
+    background-color: purple;
+    color: white;
+
+    li {
+      visibility: visible;
+      padding: 0.25rem 0.5rem;
+      border-radius: 0.25rem;
+      cursor: pointer;
+
+      ul li {
+        visibility: hidden;
+        &:hover {
+          visibility: visible;
+        }
+      }
+    }
+  }
+
+  button {
+    background-color: unset;
+    padding: 0.275rem 0.425rem;
+    border-radius: 0.3rem;
+
+    &:hover {
+      background-color: var(--gray-3);
+    }
+
+    &.is-active {
+      background-color: var(--white);
+      color: var(--purple);
+
+      &:hover {
+        color: var(--purple-contrast);
+      }
+    }
+  }
+}
+
 .tiptap {
   margin-top: 1rem;
 
