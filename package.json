@@ -4,6 +4,7 @@
   "homepage": "https://math.oscarlevin.com/pretext-tiptap-demo",
   "private": true,
   "dependencies": {
+    "@ariakit/react": "^0.4.7",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",

@@ -15,7 +15,26 @@ import json2ptx from './extensions/json2ptx'
 import './styles.scss'
 import './style_oscarlevin.css'
 import Divisions from './extensions/Divisions'
+import * as Ariakit from "@ariakit/react";
+import "./menu.css";
 
+const MenuExample = () => {
+  return (
+    <Ariakit.MenuProvider>
+      <Ariakit.Menu gutter={8} className="menu" id="menuid">
+        <Ariakit.MenuItem className="menu-item">
+          enter this box
+        </Ariakit.MenuItem>
+        <Ariakit.MenuSeparator className="separator" />
+        <Ariakit.MenuItem className="menu-item">insert before...</Ariakit.MenuItem>
+        <Ariakit.MenuItem className="menu-item">insert after...</Ariakit.MenuItem>
+        <Ariakit.MenuItem className="menu-item">move</Ariakit.MenuItem>
+        <Ariakit.MenuItem className="menu-item">delete</Ariakit.MenuItem>
+        <Ariakit.MenuItem className="menu-item">convert [name] to...</Ariakit.MenuItem>
+      </Ariakit.Menu>
+    </Ariakit.MenuProvider>
+  );
+}
 
 const getCursorPos = (editor) => {
   const currentPos = editor.$pos(editor.state.selection.$anchor.pos)
@@ -35,12 +54,13 @@ const getCursorPos = (editor) => {
 const InfoMessage = () => {
   const { editor } = useCurrentEditor()
   const cursor = getCursorPos(editor)
-  // editor.state.selection.$anchor.nodeBefore.type.name 
+  // editor.state.selection.$anchor.nodeBefore.type.name
   let currentPos = editor.$pos(editor.state.selection.$anchor.pos)
   return (
     <div className="info">
       <p>
-      Dubugging Info: 
+      Dubugging Info:
+      </p>
       <ul>
         <li>Position: {cursor.pos()}</li>
         <li> Parent Type: {cursor.parentType()}</li>
@@ -51,7 +71,6 @@ const InfoMessage = () => {
         <li> Previous node size: {cursor.prevNodeSize()}</li>
         <li> In text node? {cursor.inTextNode() ? "Yes" : "No"}</li>
       </ul>
-      </p>
     </div>
   )
 }
@@ -60,17 +79,17 @@ const InfoMessage = () => {
 
   const MenuBar = () => {
     const { editor } = useCurrentEditor()
-  
+
     if (!editor) {
       return null
     }
-  
+
     return (
       <>
         <button
           onClick={() => editor.chain().focus().insertContent(`<definition><title>Definition</title><p></p></definition>`).run()}
           >Testing</button>
-        {/* <button 
+        {/* <button
           onClick={() => editor.chain().focus().wrapIn('chapter').run()}
           disabled={!editor.can().chain().focus().wrapIn('chapter').run()}
           className={editor.isActive('chapter') ? 'is-active' : ''}
@@ -78,7 +97,7 @@ const InfoMessage = () => {
         Chapter
         </button> */}
 
-        <button 
+        <button
           onClick={() => editor.chain().focus().toggleMark('term').run()}
           disabled={!editor.can().chain().focus().toggleMark('term').run()}
           className={editor.isActive('term') ? 'is-active' : ''}
@@ -142,7 +161,7 @@ const InfoMessage = () => {
         >
           Title
         </button>
- 
+
         {/* <button
           onClick={() => editor.chain().focus().toggleBulletList().run()}
           className={editor.isActive('bulletList') ? 'is-active' : ''}
@@ -214,7 +233,7 @@ const InfoMessage = () => {
 
   const MyKeyboardShortcuts = Extension.create({
     name: 'myKeyboardShortcuts',
-    
+
     addKeyboardShortcuts() {
       const cursor = getCursorPos(this.editor)
       return {
@@ -229,7 +248,7 @@ const InfoMessage = () => {
         // ArrowDown should move the cursor to the next node at the same depth if on a box.  If in a text node, do the default.
         'ArrowDown': () => {
           if (cursor.inTextNode()) {return false}
-          else {this.editor.commands.focus(cursor.pos()+cursor.nextNodeSize(),true); return true} 
+          else {this.editor.commands.focus(cursor.pos()+cursor.nextNodeSize(),true); return true}
         },
         // ArrowUp should move the cursor to the start of the previous node at the same depth if on a box.  If in a text node, do the default.
         'ArrowUp': () => {
@@ -242,8 +261,9 @@ const InfoMessage = () => {
             this.editor.commands.setHardBreak();
             return true
           } else {
-            this.editor.commands.focus(cursor.pos()+1,true);
-            return true
+            toggleMenu()
+ //           this.editor.commands.focus(cursor.pos()+1,true);
+ //           return true
           }
         },
         'Mod-b': () => this.editor.chain().focus().setContent(defaultContent).run(),
@@ -257,6 +277,18 @@ const InfoMessage = () => {
       }
     },
   })
+
+  function toggleMenu() {
+var x = document.getElementById("menuid");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
+  console.log("can you see the menu?");
+  return(true)
+  };
+
 
   const Document = Node.create({
     name: 'document',
@@ -277,7 +309,7 @@ const InfoMessage = () => {
     Focus,
     History,
   ]
-  
+
   const defaultContent = `
   <title>My Document</title>
   <introduction>
@@ -320,7 +352,7 @@ const InfoMessage = () => {
   A <term>conjecture</term> is somethign you hope is true.
   </p>
   <p> Another paragraph </p>
-    
+
   </conjecture>
 
   <definition>
@@ -341,8 +373,7 @@ const InfoMessage = () => {
   </p>
 
   </assumption>
-  
-<p>
+
   <ul>
     <li>
       That’s a bullet list with one …
@@ -351,7 +382,6 @@ const InfoMessage = () => {
       … or two list items.
     </li>
   </ul>
-</p>
 
   <p>
     Pretty neat, huh?  Oh yeah, and it can do some math: $\\int_1^2 x^2 dx = \\frac{7}{3}$.  I don't know if you can do display math though.
@@ -385,7 +415,7 @@ const InfoMessage = () => {
 
   const EditorJSONPreview = () => {
     const { editor } = useCurrentEditor()
-  
+
     return (
       <details>
         <summary>Inspect JSON</summary>
@@ -398,7 +428,7 @@ const InfoMessage = () => {
 
   const EditorHTMLPreview = () => {
     const { editor } = useCurrentEditor()
-  
+
     return (
       <details>
         <summary>Inspect HTML</summary>
@@ -418,7 +448,7 @@ const InfoMessage = () => {
       <FloatingMenu shouldShow={() => {return (editor.isActive('para') && false)}}>
         {/* <nav className="floating-menu">
         <ul tabIndex="0">
-          <li 
+          <li
             className={!editor.can().chain().focus().wrapIn('theorem').run() ?'hide-button': ''}>Thereom-like
             <ul>
               <li>Theorem</li>
@@ -428,7 +458,7 @@ const InfoMessage = () => {
         </ul>
         </nav> */}
         <div className="floating-menu" >
-          <button 
+          <button
             onClick={() => editor.chain().focus().wrapIn('theorem').run()}
             className={!editor.can().chain().focus().wrapIn('theorem').run() ?'hide-button': ''}
           >
@@ -460,23 +490,24 @@ const InfoMessage = () => {
  const Tiptap = () => {
   const { editor } = useCurrentEditor()
       return (
-        <EditorProvider 
+        <EditorProvider
           slotBefore={
             <>
-            <MenuBar /> 
+            <MenuBar />
             <InfoMessage/>
+            <MenuExample/>
             </>
-          } 
+          }
           slotAfter={
             <>
             <EditorPTXPreview />
             <EditorJSONPreview/>
-            <EditorHTMLPreview/> 
+            <EditorHTMLPreview/>
             </>
-          } 
-          extensions={extensions} 
+          }
+          extensions={extensions}
           content={
-            JSON.parse(window.localStorage.getItem('editor-content')) || 
+            JSON.parse(window.localStorage.getItem('editor-content')) ||
             defaultContent
           }
           onUpdate={ ({ editor }) => {
@@ -490,5 +521,5 @@ const InfoMessage = () => {
         </EditorProvider>
       )
     }
-        
+
 export default Tiptap;
