@@ -22,9 +22,12 @@ const getCursorPos = (editor) => {
   return {
     pos: () => {return editor.state.selection.$anchor.pos},
     depth: () => {return editor.state.selection.$anchor.depth},
-    nodeType: () => {return editor.$pos(editor.state.selection.$anchor.pos).node.type.name},
+    inTextNode: () => {return editor.state.selection.$anchor.parent.firstChild ? (editor.state.selection.$anchor.parent.firstChild.isText) : false},
+    nodeBeforeIsText: () => {return editor.state.selection.$anchor.nodeBefore ? (editor.state.selection.$anchor.nodeBefore.type.name === 'text') : false},
     parentType: () => {return editor.state.selection.$anchor.parent.type.name},
-    anchor: () => {return editor.state.selection.$anchor}
+    anchor: () => {return editor.state.selection.$anchor},
+    nextNodeSize: () => {return editor.state.selection.$anchor.nodeAfter ? editor.state.selection.$anchor.nodeAfter.nodeSize : 0},
+    prevNodeSize: () => {return editor.state.selection.$anchor.nodeBefore ? editor.state.selection.$anchor.nodeBefore.nodeSize : 0},
   }
 }
 
@@ -32,7 +35,7 @@ const getCursorPos = (editor) => {
 const InfoMessage = () => {
   const { editor } = useCurrentEditor()
   const cursor = getCursorPos(editor)
-
+  // editor.state.selection.$anchor.nodeBefore.type.name 
   let currentPos = editor.$pos(editor.state.selection.$anchor.pos)
   return (
     <div className="info">
@@ -42,6 +45,11 @@ const InfoMessage = () => {
         <li>Position: {cursor.pos()}</li>
         <li> Parent Type: {cursor.parentType()}</li>
         <li> Depth: {cursor.depth()}</li>
+        {/* <li> Node before is text? {cursor.nodeBeforeIsText()}</li> */}
+        <li> Node before is text? {cursor.nodeBeforeIsText() ? "Yes" : "no"}</li>
+        <li> Next node size: {cursor.nextNodeSize()}</li>
+        <li> Previous node size: {cursor.prevNodeSize()}</li>
+        <li> In text node? {cursor.inTextNode() ? "Yes" : "No"}</li>
       </ul>
       </p>
     </div>
@@ -211,8 +219,33 @@ const InfoMessage = () => {
       const cursor = getCursorPos(this.editor)
       return {
         'Mod-i': () => {console.log(cursor.anchor()); return true},
-        'ArrowLeft': () => {if (cursor.depth() > 0) {console.log(cursor.depth()); this.editor.commands.selectParentNode(); this.editor.commands.scrollIntoView(); return true} else {this.editor.commands.focus(1,true);return true}},
-        // 'ArrowRight': () => {this.editor.commands.selectNodeForward(); return true},
+        // ArrowLeft moves focus to parent node, unless the cursor is in the middle of a text node, in which case it should just do the "normal" thing.
+        'ArrowLeft': () => {
+          if (cursor.nodeBeforeIsText()) {return false}
+          if (cursor.depth() > 0) {console.log(cursor.depth()); this.editor.commands.selectParentNode(); this.editor.commands.scrollIntoView(); return true} else {this.editor.commands.focus(1,true);return true}
+        },
+        // ArrowRight moves the position of the cursor to the next position, which can be the next text position or the next node.
+        'ArrowRight': () => {this.editor.commands.focus(cursor.pos()+1,true); return true},
+        // ArrowDown should move the cursor to the next node at the same depth if on a box.  If in a text node, do the default.
+        'ArrowDown': () => {
+          if (cursor.inTextNode()) {return false}
+          else {this.editor.commands.focus(cursor.pos()+cursor.nextNodeSize(),true); return true} 
+        },
+        // ArrowUp should move the cursor to the start of the previous node at the same depth if on a box.  If in a text node, do the default.
+        'ArrowUp': () => {
+          if (cursor.inTextNode()) {return false}
+          else {this.editor.commands.focus(cursor.pos()-cursor.prevNodeSize(),true); return true}
+        },
+        // Enter should move the cursor onto the child node if on a box, or add a line break if in a text node.
+        'Enter': () => {
+          if (cursor.inTextNode()) {
+            this.editor.commands.setHardBreak();
+            return true
+          } else {
+            this.editor.commands.focus(cursor.pos()+1,true);
+            return true
+          }
+        },
         'Mod-b': () => this.editor.chain().focus().setContent(defaultContent).run(),
         'Mod-q': () => this.editor.commands.blur(),
         // Escape moves focus to parent node.
