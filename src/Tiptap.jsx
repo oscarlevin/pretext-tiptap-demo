@@ -16,35 +16,32 @@ import './styles.scss'
 import './style_oscarlevin.css'
 import Divisions from './extensions/Divisions'
 
+
+const getCursorPos = (editor) => {
+  const currentPos = editor.$pos(editor.state.selection.$anchor.pos)
+  return {
+    pos: () => {return editor.state.selection.$anchor.pos},
+    depth: () => {return editor.state.selection.$anchor.depth},
+    nodeType: () => {return editor.$pos(editor.state.selection.$anchor.pos).node.type.name},
+    parentType: () => {return editor.state.selection.$anchor.parent.type.name},
+    anchor: () => {return editor.state.selection.$anchor}
+  }
+}
+
+
 const InfoMessage = () => {
   const { editor } = useCurrentEditor()
-  const cursor = {
-    pos: editor.state.selection.$anchor.pos,
-    node: (editor.state.selection.$anchor.before ? editor.state.selection.$anchor.before() : editor.state.selection.$anchor.parent),
-    nodeAfter: (editor.state.selection.$anchor.after.name),
-    nodeBefore: editor.state.selection.$anchor.nodeBefore,
-  }
-  console.log(editor.state.selection.$anchor)
+  const cursor = getCursorPos(editor)
+
   let currentPos = editor.$pos(editor.state.selection.$anchor.pos)
-  const $myCustomPos = editor.$pos(editor.state.selection.$anchor.pos)
-  const $prevPos = $myCustomPos.after.pos > 0 ? $myCustomPos.after.pos : 0
   return (
     <div className="info">
       <p>
-
       Dubugging Info: 
       <ul>
-        <li>
-      Position: {editor.state.selection.anchor}
-
-        </li>
-        <li>
-          Node Position: {cursor.nodeAfter}
-        </li>
-      <li>
-
-      Content: {editor.state.selection.$anchor.textOffset}
-      </li>
+        <li>Position: {cursor.pos()}</li>
+        <li> Parent Type: {cursor.parentType()}</li>
+        <li> Depth: {cursor.depth()}</li>
       </ul>
       </p>
     </div>
@@ -209,19 +206,21 @@ const InfoMessage = () => {
 
   const MyKeyboardShortcuts = Extension.create({
     name: 'myKeyboardShortcuts',
-
+    
     addKeyboardShortcuts() {
-      let currentPos = this.editor.$pos(this.editor.state.selection.$anchor.pos)
-
+      const cursor = getCursorPos(this.editor)
       return {
+        'Mod-i': () => {console.log(cursor.anchor()); return true},
+        'ArrowLeft': () => {if (cursor.depth() > 0) {console.log(cursor.depth()); this.editor.commands.selectParentNode(); this.editor.commands.scrollIntoView(); return true} else {this.editor.commands.focus(1,true);return true}},
+        // 'ArrowRight': () => {this.editor.commands.selectNodeForward(); return true},
         'Mod-b': () => this.editor.chain().focus().setContent(defaultContent).run(),
         'Mod-q': () => this.editor.commands.blur(),
         // Escape moves focus to parent node.
         'Escape': () => this.editor.commands.selectParentNode(),
         'Mod-Right': () => this.editor.commands.selectNodeForward(),
         'Mod-Down': () => this.editor.commands.selectNodeForward(),
-        'Alt-ArrowUp': () => this.editor.commands.setNodeSelection(currentPos.before ? currentPos.before.pos : currentPos.pos),
-        'Alt-ArrowDown': () => this.editor.commands.setNodeSelection(currentPos.after ? currentPos.after.pos : currentPos.pos),
+        // 'Alt-ArrowUp': () => this.editor.commands.setNodeSelection(currentPos.before ? currentPos.before.pos : currentPos.pos),
+        // 'Alt-ArrowDown': () => this.editor.commands.setNodeSelection(currentPos.after ? currentPos.after.pos : currentPos.pos),
       }
     },
   })
@@ -230,13 +229,6 @@ const InfoMessage = () => {
     name: 'document',
     topNode: true,
     content: 'title introduction? section+',
-
-
-    // addKeyboardShortcuts() {
-    //   return {
-    //     // 'Mod-b': () => this.editor.commands.showMenu(),
-    //   }
-    // },
   })
 
   const extensions = [

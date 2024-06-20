@@ -1,5 +1,17 @@
 /* Basic editor styles */
 
+.info {
+  display: block;
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+  right:0;
+  background-color: rgb(173, 216, 230,.75);
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+}
+
 .hide-button {
   display: none;
 }
