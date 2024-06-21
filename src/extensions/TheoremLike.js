@@ -17,6 +17,7 @@ const TheoremLike = Extension.create({
         group: 'block theoremLike',
         selectable: true,
         draggable: true,
+        defining: false,
         parseHTML() {
           return [
             {
@@ -25,26 +26,10 @@ const TheoremLike = Extension.create({
           ]
         },
         renderHTML({ HTMLAttributes }) {
-          return ['article', mergeAttributes({ class: `${element} theorem-like`, label: element, tabindex: 0 }, HTMLAttributes), 0]
+          return ['article', mergeAttributes({ class: `${element} theorem-like`, label: element }, HTMLAttributes), 0]
         },
-        addCommands() {
-          return {
-            [`set${element.charAt(0).toUpperCase() + element.slice(1)}`]: attributes => ({ commands }) => {
-              return commands.setWrap(this.name, attributes)
-            },
-            // [`toggle${element.charAt(0).toUpperCase() + element.slice(1)}`]: attributes => ({ commands }) => {
-            //   return commands.toggleWrap(this.name, attributes)
-            // },
-          }
-        },
-        addInputRules() {
-          return [
-            wrappingInputRule({
-              find: new RegExp(`^!${element.charAt(0).toUpperCase() + element.slice(1)}\\s$`),
-              type: this.type,
-            }),
-          ]
-        }
+
+
       }))
 
     }

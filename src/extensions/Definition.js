@@ -29,16 +29,6 @@ const Definition = Node.create({
     return ['article', mergeAttributes({ class: 'definition definition-like', label: 'definition' }, HTMLAttributes), 0]
   },
 
-  addCommands() {
-    return {
-      setDefinition: attributes => ({ commands }) => {
-        return commands.setWrap(this.name, attributes)
-      },
-      toggleDefinition: attributes => ({ commands }) => {
-        return commands.toggleWrap(this.name, attributes)
-      },
-    }
-  },
 
   addInputRules() {
     return [
@@ -49,11 +39,11 @@ const Definition = Node.create({
     ]
   },
 
-  addKeyboardShortcuts() {
-    return {
-      'Mod-d': this.editor.commands.insertContent('<definition><title>Definition</title><p></p></definition>'),
-    }
-  }
+  // addKeyboardShortcuts() {
+  //   return {
+  //     'Mod-d': this.editor.commands.insertContent('<definition><title>Definition</title><p></p></definition>'),
+  //   }
+  // }
 
 })
 
