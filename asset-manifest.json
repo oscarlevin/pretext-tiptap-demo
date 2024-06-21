@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/pretext-tiptap-demo/static/css/main.fe0d486a.css",
-    "main.js": "/pretext-tiptap-demo/static/js/main.3fbb7fc0.js",
+    "main.css": "/pretext-tiptap-demo/static/css/main.5d84ba53.css",
+    "main.js": "/pretext-tiptap-demo/static/js/main.b7a3335b.js",
     "static/js/453.9fe02ad5.chunk.js": "/pretext-tiptap-demo/static/js/453.9fe02ad5.chunk.js",
     "static/media/KaTeX_AMS-Regular.ttf": "/pretext-tiptap-demo/static/media/KaTeX_AMS-Regular.853be92419a6c3766b9a.ttf",
     "static/media/KaTeX_Main-Regular.ttf": "/pretext-tiptap-demo/static/media/KaTeX_Main-Regular.9eba1d77abcf2aa6e94e.ttf",
@@ -64,12 +64,12 @@
     "static/media/KaTeX_Size3-Regular.woff": "/pretext-tiptap-demo/static/media/KaTeX_Size3-Regular.7947224e8a9914fa332b.woff",
     "static/media/KaTeX_Size3-Regular.woff2": "/pretext-tiptap-demo/static/media/KaTeX_Size3-Regular.e1951519f6f0596f7356.woff2",
     "index.html": "/pretext-tiptap-demo/index.html",
-    "main.fe0d486a.css.map": "/pretext-tiptap-demo/static/css/main.fe0d486a.css.map",
-    "main.3fbb7fc0.js.map": "/pretext-tiptap-demo/static/js/main.3fbb7fc0.js.map",
+    "main.5d84ba53.css.map": "/pretext-tiptap-demo/static/css/main.5d84ba53.css.map",
+    "main.b7a3335b.js.map": "/pretext-tiptap-demo/static/js/main.b7a3335b.js.map",
     "453.9fe02ad5.chunk.js.map": "/pretext-tiptap-demo/static/js/453.9fe02ad5.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.fe0d486a.css",
-    "static/js/main.3fbb7fc0.js"
+    "static/css/main.5d84ba53.css",
+    "static/js/main.b7a3335b.js"
   ]
 }
