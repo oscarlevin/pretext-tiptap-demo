@@ -42,7 +42,8 @@ const getCursorPos = (editor) => {
     pos: () => {return editor.state.selection.$anchor.pos},
     depth: () => {return editor.state.selection.$anchor.depth},
     inTextNode: () => {return editor.state.selection.$anchor.parent.firstChild ? (editor.state.selection.$anchor.parent.firstChild.isText) : false},
-    nodeBeforeIsText: () => {return editor.state.selection.$anchor.nodeBefore ? (editor.state.selection.$anchor.nodeBefore.type.name === 'text') : false},
+    prevNodeIsText: () => {return editor.state.selection.$anchor.nodeBefore ? (editor.state.selection.$anchor.nodeBefore.isText) : false},
+    nextNodeIsText: () => {return editor.state.selection.$anchor.nodeAfter ? (editor.state.selection.$anchor.nodeAfter.type.name === 'text') : false},
     parentType: () => {return editor.state.selection.$anchor.parent.type.name},
     anchor: () => {return editor.state.selection.$anchor},
     nextNodeSize: () => {return editor.state.selection.$anchor.nodeAfter ? editor.state.selection.$anchor.nodeAfter.nodeSize : 0},
@@ -66,9 +67,10 @@ const InfoMessage = () => {
         <li> Parent Type: {cursor.parentType()}</li>
         <li> Depth: {cursor.depth()}</li>
         {/* <li> Node before is text? {cursor.nodeBeforeIsText()}</li> */}
-        <li> Node before is text? {cursor.nodeBeforeIsText() ? "Yes" : "no"}</li>
-        <li> Next node size: {cursor.nextNodeSize()}</li>
+        <li> Node before is text? {cursor.prevNodeIsText() ? "Yes" : "no"}</li>
+        <li> Node after is text? {cursor.nextNodeIsText() ? "Yes" : "no"}</li>
         <li> Previous node size: {cursor.prevNodeSize()}</li>
+        <li> Next node size: {cursor.nextNodeSize()}</li>
         <li> In text node? {cursor.inTextNode() ? "Yes" : "No"}</li>
       </ul>
     </div>
@@ -240,7 +242,7 @@ const InfoMessage = () => {
         'Mod-i': () => {console.log(cursor.anchor()); return true},
         // ArrowLeft moves focus to parent node, unless the cursor is in the middle of a text node, in which case it should just do the "normal" thing.
         'ArrowLeft': () => {
-          if (cursor.nodeBeforeIsText()) {return false}
+          if (cursor.prevNodeIsText()) {return false}
           if (cursor.depth() > 0) {console.log(cursor.depth()); this.editor.commands.selectParentNode(); this.editor.commands.scrollIntoView(); return true} else {this.editor.commands.focus(1,true);return true}
         },
         // ArrowRight moves the position of the cursor to the next position, which can be the next text position or the next node.
@@ -255,13 +257,20 @@ const InfoMessage = () => {
           if (cursor.inTextNode()) {return false}
           else {this.editor.commands.focus(cursor.pos()-cursor.prevNodeSize(),true); return true}
         },
-        // Enter should move the cursor onto the child node if on a box, or add a line break if in a text node.
+        // Enter should move the cursor onto the child node if on a box, or add a line break if in a text node.  The second time Enter is pressed inside a text node, directly after a hardBreak, the cursor should create a new text node.
         'Enter': () => {
           if (cursor.inTextNode()) {
+            if (!cursor.prevNodeIsText() && cursor.prevNodeSize() === 1){
+              const pos = cursor.pos();
+              this.editor.commands.splitBlock();
+              this.editor.commands.deleteRange({from: pos-1, to: pos+1});
+              if (true) return true
+            }
             this.editor.commands.setHardBreak();
             return true
           } else {
             toggleMenu()
+            return true
  //           this.editor.commands.focus(cursor.pos()+1,true);
  //           return true
           }
