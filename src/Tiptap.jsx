@@ -3,7 +3,8 @@ import { EditorProvider, useCurrentEditor, FloatingMenu} from '@tiptap/react'
 import { History } from '@tiptap/extension-history'
 // import FloatingMenu from '@tiptap/extension-floating-menu'
 import { Mathematics } from '@tiptap-pro/extension-mathematics'
-import 'katex/dist/katex.min.css'
+import { FileHandler } from '@tiptap-pro/extension-file-handler'
+import 'katex/dist/katex.min.css' 
 import Focus from '@tiptap/extension-focus'
 import Inline from './extensions/Inline'
 import Blocks from './extensions/Blocks'
@@ -99,6 +100,44 @@ var x = document.getElementById("menuid");
       mode: 'deepest',
     }),
     History,
+    FileHandler.configure({
+      allowedMimeTypes: ['text/*'],
+      onDrop: (currentEditor, files, pos) => {
+        files.forEach(file => {
+          const fileReader = new FileReader()
+          fileReader.readAsText(file)
+          // fileReader.readAsDataURL(file)
+          fileReader.onload = () => {
+            const content = fileReader.result
+            console.log(content)
+            console.log(content)
+            currentEditor.chain().insertContentAt(pos, content).focus().run()
+          }
+        })
+      },
+      onPaste: (currentEditor, files, htmlContent) => {
+        files.forEach(file => {
+          if (htmlContent) {
+            // if there is htmlContent, stop manual insertion & let other extensions handle insertion via inputRule
+            // you could extract the pasted file from this url string and upload it to a server for example
+            console.log(htmlContent) // eslint-disable-line no-console
+            return false
+          }
+
+          const fileReader = new FileReader()
+
+          fileReader.readAsDataURL(file)
+          fileReader.onload = () => {
+            currentEditor.chain().insertContentAt(currentEditor.state.selection.anchor, {
+              type: 'image',
+              attrs: {
+                src: fileReader.result,
+              },
+            }).focus().run()
+          }
+        })
+      },
+    }),
   ]
 
   const EditorPTXPreview = () => {

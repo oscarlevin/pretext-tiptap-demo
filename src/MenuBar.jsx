@@ -142,6 +142,7 @@ export const MenuBar = () => {
       >
         reset
       </button>
+      <button onClick={() => editor.chain().focus().setContent("").run()}>Clear Editor</button>
       {/* <button
               onClick={() => editor.chain().focus().setColor('#958DF1').run()}
               className={editor.isActive('textStyle', { color: '#958DF1' }) ? 'is-active' : ''}
